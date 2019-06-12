@@ -22,7 +22,7 @@ function getFooterStyle(theme) {
 }
 function getSeparatorStyle(theme) {
     return {
-        backgroundColor: theme === 'dark' ? 'black' : '#A0F8FF',
+        backgroundColor: theme === 'dark' ? 'black' : '#AAFFFF',
         height: '.3em',
         left: '0',
         margin: '0'

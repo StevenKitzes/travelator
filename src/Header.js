@@ -27,7 +27,8 @@ function getThemeButtonStyle(theme) {
         backgroundColor: theme === 'dark' ? 'rgba(255,255,255,.75)': 'rgba(0,0,0,.85)',
         borderStyle: 'none',
         color: theme === 'dark' ? 'black' : 'white',
-        padding: '0.2em',
+        cursor: 'pointer',
+        padding: '.2em .4em',
         position: 'fixed',
         right: '0',
         top: '0'
