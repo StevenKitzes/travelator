@@ -1,17 +1,28 @@
 import React from 'react';
 
-function Header(props) {
-    let theme = props.theme;
+import CONSTANTS from './constants';
+
+function Header({theme, setTheme}) {
+
+    const themeColors = theme === CONSTANTS.dark ?
+        CONSTANTS.colors.dark :
+        CONSTANTS.colors.light;
 
     function toggleTheme() {
-        props.setTheme(theme === 'dark' ? 'light' : 'dark');
+        setTheme(theme === CONSTANTS.dark ? CONSTANTS.light : CONSTANTS.dark);
     }
 
     return(
         <div style={headerContainerStyle}>
-            <img alt='A lovely header' style={headerImageStyle} src={theme === 'dark' ? '/img/city.jpg' : '/img/beach.jpg'} />
-            <span style={getTitleStyle(theme)}>Travelator</span>
-            <button style={getThemeButtonStyle(theme)} onClick={toggleTheme}>Switch theme</button>
+            <img
+                alt='A lovely header'
+                style={headerImageStyle}
+                src={theme === CONSTANTS.dark ?
+                    CONSTANTS.images.dark.header :
+                    CONSTANTS.images.light.header}
+            />
+            <span style={getTitleStyle(themeColors)}>Travelator</span>
+            <button style={getThemeButtonStyle(themeColors)} onClick={toggleTheme}>Switch theme</button>
         </div>
     );
 };
@@ -24,9 +35,9 @@ const headerContainerStyle = {
 }
 function getThemeButtonStyle(theme) {
     return {
-        backgroundColor: theme === 'dark' ? 'rgba(255,255,255,.75)': 'rgba(0,0,0,.85)',
+        backgroundColor: theme.themeButtonBg,
         borderStyle: 'none',
-        color: theme === 'dark' ? 'black' : 'white',
+        color: theme.themeButtonText,
         cursor: 'pointer',
         padding: '.2em .4em',
         position: 'fixed',
@@ -42,9 +53,9 @@ const headerImageStyle = {
 }
 function getTitleStyle(theme) {
     return {
-        backgroundColor: theme === 'dark' ? 'rgba(0,0,0,.85)' : 'rgba(255,255,255,.75)',
+        backgroundColor: theme.titleBg,
         bottom: '.7em',
-        color: theme === 'dark' ? 'white' : 'black',
+        color: theme.titleText,
         fontSize: '2em',
         fontWeight: '900',
         left: '.7em',
