@@ -36,10 +36,11 @@ const headerContainerStyle = {
 function getThemeButtonStyle(theme) {
     return {
         backgroundColor: theme.themeButtonBg,
+        borderRadius: '0 0 0 1em',
         borderStyle: 'none',
         color: theme.themeButtonText,
         cursor: 'pointer',
-        padding: '.2em .4em',
+        padding: '.2em .4em .3em .6em',
         position: 'fixed',
         right: '0',
         top: '0'
