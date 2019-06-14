@@ -1,9 +1,10 @@
 import React from 'react';
 import uuid from 'uuid/v4';
 
-import CONSTANTS from './constants';
+import CONSTANTS from './../constants';
 
 import AddButton from './AddButton';
+import ItineraryItem from './ItineraryItem';
 
 function Body({theme, itinerary, setItinerary}) {
     
@@ -34,13 +35,15 @@ function Body({theme, itinerary, setItinerary}) {
 
     return (
         <div style={getBodyStyle(themeColors)}>
-            {itinerary.length > 0 ? null : <h1>Itinerary will display here once it has something in it.</h1>}
+            {itinerary.length > 0 ? null : <h3>Add itinerary items to see them here.</h3>}
             {itinerary.map((item) => {
                 return(
-                    <p key={uuid()} onClick={popFromInv}>{item}</p>
+                    <ItineraryItem key={uuid()} onClick={popFromInv}>
+                        {item}
+                    </ItineraryItem>
                 );
             })}
-            {itinerary.length > 0 ? <h1>Itinerary summary displays when itinerary has items.</h1> : null}
+            {itinerary.length > 0 ? <h3>Itinerary items above.</h3> : null}
             <AddButton theme={theme} onClick={addTravel}>
                 + Travel
             </AddButton>
@@ -64,6 +67,7 @@ function getBodyStyle(colors) {
         height: 'calc(100% - 18em)',
         overflowY: 'auto',
         position: 'fixed',
+        textAlign: 'center',
         top: '15em',
         width: '100%'
     }

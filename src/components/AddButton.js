@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import CONSTANTS from './constants';
+import CONSTANTS from './../constants';
 
 const AddButton = styled.button`
     background-color: ${props => props.theme === CONSTANTS.dark ?
