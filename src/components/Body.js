@@ -45,10 +45,10 @@ function Body({theme, itinerary, setItinerary}) {
             })}
             {itinerary.length > 0 ? <h3>Itinerary items above.</h3> : null}
             <AddButton theme={theme} onClick={addTravel}>
-                + Travel
+                + Transport
             </AddButton>
             <AddButton theme={theme} onClick={addAccommodation}>
-                + Accommodation
+                + Lodging
             </AddButton>
             <AddButton theme={theme} onClick={addActivity}>
                 + Activity
