@@ -4,7 +4,7 @@ import uuid from 'uuid/v4';
 import CONSTANTS from './../constants';
 
 import AddButton from './AddButton';
-import ItineraryItem from './ItineraryItem';
+import ItemTravel from './ItemTravel';
 
 function Body({theme, itinerary, setItinerary}) {
     
@@ -29,8 +29,9 @@ function Body({theme, itinerary, setItinerary}) {
         setItinerary(Array.from(itinerary));
     }
     function popFromInv() {
-        itinerary.pop();
-        setItinerary(Array.from(itinerary));
+        console.log('this will be a placeholder item remover function');
+        // itinerary.pop();
+        // setItinerary(Array.from(itinerary));
     }
 
     return (
@@ -38,9 +39,7 @@ function Body({theme, itinerary, setItinerary}) {
             {itinerary.length > 0 ? null : <h3>Add itinerary items to see them here.</h3>}
             {itinerary.map((item) => {
                 return(
-                    <ItineraryItem key={uuid()} onClick={popFromInv}>
-                        {item}
-                    </ItineraryItem>
+                    <ItemTravel notes={item} key={uuid()} clickHandler={popFromInv} />
                 );
             })}
             {itinerary.length > 0 ? <h3>Itinerary items above.</h3> : null}
