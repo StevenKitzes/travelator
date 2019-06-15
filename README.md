@@ -15,11 +15,11 @@ Want to include:
 #### Fields:
 Line type title "Travel" | subtype icon | subtype title (e.g. "Air" or "Rental Car", editable if custom) | origin | depart | destination | arrive | cost | move up, move down, remove line buttons
 
-### Accommodation
+### Lodging
 (e.g. hotel, camp, airbnb, friend/fam house, etc)
 
 #### Fields:
-Line type title "Accommodations" | subtype icon | subtype title (e.g. "hotel" or "camping", editable if custom) | location | arrive date | depart date | cost | move up, move down, remove line buttons
+Line type title "Lodging" | subtype icon | subtype title (e.g. "hotel" or "camping", editable if custom) | location | arrive date | depart date | cost | move up, move down, remove line buttons
 
 ### Activity
 (probably custom text)

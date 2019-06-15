@@ -5,22 +5,21 @@ import "react-datepicker/dist/react-datepicker.css";  // required by above
 import ItineraryItem from './ItineraryItem';
 import { Portal } from 'react-overlays';
 
-function ItemTravel({notes, clickHandler}) {
-    const [startDate, setStartDate] = useState(new Date());
+function ItemTravel({details}) {
+    const [startDate, setStartDate] = useState(details.typeDetails.departureDate);
 
     function handleChange(date) {
         setStartDate(date);
     }
 
     return (
-        <ItineraryItem onClick={clickHandler}>
+        <ItineraryItem>
             Departing: 
             <DatePicker
               selected={startDate}
-              onChange={handleChange}
+              onChange={handleChange}   // TODO: this should be a drill-down from itinerary item
               popperContainer={Portal}
               />
-            {notes}
         </ItineraryItem>
     );
 }

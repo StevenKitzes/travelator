@@ -1,7 +1,7 @@
 import React from 'react';
-import uuid from 'uuid/v4';
 
 import CONSTANTS from './../constants';
+import Factory from '../factory';
 
 import AddButton from './AddButton';
 import ItemTravel from './ItemTravel';
@@ -13,46 +13,37 @@ function Body({theme, itinerary, setItinerary}) {
         CONSTANTS.colors.light;
 
     function addTravel() {
-        itinerary.push('Travel item');
+        const travelItem = Factory(CONSTANTS.travelType);
+        itinerary.push(travelItem);
         setItinerary(Array.from(itinerary));
-    }
-    function addAccommodation() {
-        itinerary.push('Accommodation item');
-        setItinerary(Array.from(itinerary));
-    }
-    function addActivity() {
-        itinerary.push('Activity item');
-        setItinerary(Array.from(itinerary));
-    }
-    function addFood() {
-        itinerary.push('Food item');
-        setItinerary(Array.from(itinerary));
-    }
-    function popFromInv() {
-        console.log('this will be a placeholder item remover function');
-        // itinerary.pop();
-        // setItinerary(Array.from(itinerary));
     }
 
     return (
         <div style={getBodyStyle(themeColors)}>
             {itinerary.length > 0 ? null : <h3>Add itinerary items to see them here.</h3>}
             {itinerary.map((item) => {
-                return(
-                    <ItemTravel notes={item} key={uuid()} clickHandler={popFromInv} />
-                );
+                switch(item.type) {
+                    case CONSTANTS.travelType:
+                        return(
+                            <ItemTravel details={item} key={item.key} />
+                        );
+                    default:
+                        return (
+                            <h4>Whoopsies!  Invalid itinerary object!</h4>
+                        );
+                }
             })}
             {itinerary.length > 0 ? <h3>Itinerary items above.</h3> : null}
             <AddButton theme={theme} onClick={addTravel}>
                 + Transport
             </AddButton>
-            <AddButton theme={theme} onClick={addAccommodation}>
+            <AddButton theme={theme} onClick={addTravel}>
                 + Lodging
             </AddButton>
-            <AddButton theme={theme} onClick={addActivity}>
+            <AddButton theme={theme} onClick={addTravel}>
                 + Activity
             </AddButton>
-            <AddButton theme={theme} onClick={addFood}>
+            <AddButton theme={theme} onClick={addTravel}>
                 + Food
             </AddButton>
         </div>

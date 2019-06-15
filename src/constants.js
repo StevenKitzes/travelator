@@ -33,9 +33,43 @@ const constants = {
             header: '/img/city.jpg'
         }
     },
-
+    
     dark: 'dark',
-    light: 'light'
+    light: 'light',
+
+    travelType: 'travelType',
+    travelSubtypes: {
+        airfare: 'airfare',
+        bicycle: 'bicycle',
+        car: 'car',
+        motorcycle: 'motorcycle',
+        rental: 'rental',
+        rideshare: 'rideshare',
+        walk: 'walk',
+        custom: 'custom'
+    },
+    
+    lodgingType: 'lodgingType',
+    lodgingSubtypes: {
+        camping: 'camping',
+        couch: 'couch',
+        hotel: 'hotel',
+        custom: 'custom'
+    },
+    
+    activityType: 'activityType',
+    activitySubtypes: {
+        custom: 'custom'
+    },
+    
+    foodType: 'foodType',
+    foodSubTypes: {
+        bar: 'bar',
+        cooking: 'cooking',
+        restaurant: 'restaurant',
+        snacks: 'snacks',
+        custom: 'custom'
+    }
 };
 
 export default constants;
