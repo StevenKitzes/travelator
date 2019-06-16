@@ -31,7 +31,9 @@ const constants = {
         },
         dark: {
             header: '/img/city.jpg'
-        }
+        },
+        iconClose: '/img/icon-close.png',
+        iconUp: '/img/icon-up.png'
     },
     
     dark: 'dark',

@@ -17,26 +17,26 @@ function getNewItineraryItem(type) {
         case CONSTANTS.travelType:
             itineraryItem.typeDetails = {
                 origin: '',
-                departureDate: new Date(),
+                departureDate: (new Date()).setMinutes(0),
                 destination: '',
-                arrivalDate: new Date()
+                arrivalDate: (new Date()).setMinutes(0)
             };
             break;
         case CONSTANTS.lodgingType:
             itineraryItem.typeDetails = {
-                arrivalDate: new Date(),
-                departureDate: new Date()
+                arrivalDate: (new Date()).setMinutes(0),
+                departureDate: (new Date()).setMinutes(0)
             };
             break;
         case CONSTANTS.activityType:
             itineraryItem.typeDetails = {
-                date: new Date(),
+                date: (new Date()).setMinutes(0),
                 durationHours: 0
             };
             break;
         case CONSTANTS.foodType:
             itineraryItem.typeDetails = {
-                date: new Date()
+                date: (new Date()).setMinutes(0)
             };
             break;
         default:

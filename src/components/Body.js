@@ -18,6 +18,10 @@ function Body({theme, itinerary, setItinerary}) {
         setItinerary(Array.from(itinerary));
     }
 
+    function reportItin() {
+        alert(JSON.stringify(itinerary));
+    }
+
     return (
         <div style={getBodyStyle(themeColors)}>
             {itinerary.length > 0 ? null : <h3>Add itinerary items to see them here.</h3>}
@@ -25,7 +29,12 @@ function Body({theme, itinerary, setItinerary}) {
                 switch(item.type) {
                     case CONSTANTS.travelType:
                         return(
-                            <ItemTravel details={item} key={item.key} />
+                            <ItemTravel
+                                itemKey={item.key}
+                                theme={theme}
+                                itinerary={itinerary}
+                                setItinerary={setItinerary}
+                                key={item.key} />
                         );
                     default:
                         return (
@@ -46,6 +55,7 @@ function Body({theme, itinerary, setItinerary}) {
             <AddButton theme={theme} onClick={addTravel}>
                 + Food
             </AddButton>
+            <button onClick={reportItin}>check itin state</button>
         </div>
     );
 }
