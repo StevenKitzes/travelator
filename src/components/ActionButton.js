@@ -4,7 +4,7 @@ const ActionButton = styled.img`
     cursor: pointer;
     float: right;
     height: 1.5em;
-    margin: 0 0 0 .2em;
+    margin: 0.4em 0 0 .2em;
     text-align: center;
     transform: ${props => props.verticalMirror ?
         'rotate(180deg)' :

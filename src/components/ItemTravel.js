@@ -1,13 +1,16 @@
 import React from 'react';
 
 import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";  // required by above
-import ItineraryItem from './ItineraryItem';
-import { Portal } from 'react-overlays';
+import "react-datepicker/dist/react-datepicker.css";    // required by DatePicker
+import { Portal } from 'react-overlays';                // required by DatePicker
 
 import CONSTANTS from '../constants';
 import ItineraryHelper from '../itinerary-helper';
 
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+
+import ItineraryItem from './ItineraryItem';
 import ActionButton from './ActionButton';
 
 function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
@@ -24,6 +27,10 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
 
     return (
         <ItineraryItem theme={theme}>
+            <DropdownButton style={{display: 'inline-block'}} title={''}>
+                <Dropdown.Item>Hi</Dropdown.Item>
+                <Dropdown.Item>Bye</Dropdown.Item>
+            </DropdownButton> {' '}
             Departing:{' '}
             <DatePicker
               showTimeSelect

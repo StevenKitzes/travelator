@@ -9,9 +9,9 @@ const ItineraryItem = styled.div`
     color: black;
     border-radius: .2em;
     display: inline-block;
-    height: 1.5em;
+    /*height: 1.5em;*/
     margin: .5em 0 0;
-    padding: .25em;
+    padding: .25em .5em;
     text-align: left;
     width: 90%;
 `;
