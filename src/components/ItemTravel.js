@@ -28,7 +28,7 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
             <DatePicker
               showTimeSelect
               timeFormat='HH:mm'
-              dateFormat="MMMM d h:mm aa"
+              dateFormat="MMMM d, h:mm aa"
               selected={item.typeDetails.departureDate}
               onChange={handleDepartureChange}
               popperContainer={Portal}
@@ -38,7 +38,7 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
             <DatePicker
               showTimeSelect
               timeFormat='HH:mm'
-              dateFormat="MMMM d h:mm aa"
+              dateFormat="MMMM d, h:mm aa"
               selected={item.typeDetails.arrivalDate}
               onChange={handleArrivalChange}
               popperContainer={Portal}
