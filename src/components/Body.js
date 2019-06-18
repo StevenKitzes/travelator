@@ -66,6 +66,7 @@ function getBodyStyle(colors) {
         color: colors.text,
         height: 'calc(100% - 18em)',
         overflowY: 'auto',
+        paddingTop: '0.5em',
         position: 'fixed',
         textAlign: 'center',
         top: '15em',

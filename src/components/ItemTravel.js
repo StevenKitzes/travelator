@@ -8,6 +8,7 @@ import { Portal } from 'react-overlays';
 import CONSTANTS from '../constants';
 import ItineraryHelper from '../itinerary-helper';
 
+import ExpandableSelector from './ExpandableSelector';
 import ActionButton from './ActionButton';
 
 function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
@@ -21,9 +22,13 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
         item.typeDetails.arrivalDate = date;
         setItinerary(Array.from(itinerary));
     }
+    function removeItineraryItem() {
+        ItineraryHelper.removeItineraryItemByKey(itemKey, itinerary, setItinerary);
+    }
 
     return (
         <ItineraryItem theme={theme}>
+            <ExpandableSelector />{' '}
             Departing:{' '}
             <DatePicker
               showTimeSelect
@@ -44,9 +49,9 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
               popperContainer={Portal}
               popperPlacement='auto-right'
               />
-            <ActionButton src={CONSTANTS.images.iconClose} />
-            <ActionButton src={CONSTANTS.images.iconUp} verticalMirror />
-            <ActionButton src={CONSTANTS.images.iconUp} />
+            <ActionButton
+                src={CONSTANTS.images.iconClose}
+                onClick={removeItineraryItem} />
         </ItineraryItem>
     );
 }
