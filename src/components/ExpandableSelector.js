@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 import CONSTANTS from '../constants';
 
-function ExpandableSelector(props) {
+function ExpandableSelector({theme}) {
     const [expanded, setExpanded] = useState(false);
 
     function toggleExpanded() {
@@ -13,31 +13,37 @@ function ExpandableSelector(props) {
     }
 
     return (
-        <div style={expandableSelectorStyle} onClick={toggleExpanded}>
-            <img style={iconStyle} src='/img/food/bar.svg' />{' '}
+        <div style={getExpandableSelectorStyle(theme)} onClick={toggleExpanded}>
+            <img style={iconStyle} src='/img/travel/airfare.svg' />{' '}
             <img style={caretStyle} src={CONSTANTS.images.caretBlack} />{' '}
-            <div style={getExpandedSelectorStyle(expanded)} onClick={noParentClick}>Expanded!</div>
+            <div style={getExpandedSelectorStyle(expanded, theme)} onClick={noParentClick}>Expanded!</div>
         </div>
     );
 }
 
-const expandableSelectorStyle = {
-    backgroundColor: 'white',
-    border: '.1rem solid lightgray',
-    borderRadius: '.25rem',
-    cursor: 'pointer',
-    display: 'inline-block',
-    margin: '-.2rem 0 0 0',
-    padding: '.2rem .4rem'
-}
-function getExpandedSelectorStyle(expanded) {
+function getExpandableSelectorStyle(theme) {
     return {
-        backgroundColor: 'white',
-        border: '.1rem solid lightgray',
+        backgroundColor: (theme === CONSTANTS.dark ?
+            CONSTANTS.colors.dark.expandableBg :
+            CONSTANTS.colors.light.expandableBg),
+        border: '.1rem solid gray',
+        borderRadius: '.25rem',
+        cursor: 'pointer',
+        display: 'inline-block',
+        margin: '-.2rem 0 0 0',
+        padding: '.2rem .4rem'
+    };
+}
+function getExpandedSelectorStyle(expanded, theme) {
+    return {
+        backgroundColor: (theme === CONSTANTS.dark ?
+            CONSTANTS.colors.dark.expandableBg :
+            CONSTANTS.colors.light.expandableBg),
+        border: '.1rem solid gray',
         borderRadius: '.25rem',
         cursor: 'pointer',
         display: expanded ? 'inline-block' : 'none',
-        left: '8rem',
+        left: '16rem',
         margin: '-.25rem 0 0 0',
         padding: '.2rem .4rem',
         position: 'absolute',

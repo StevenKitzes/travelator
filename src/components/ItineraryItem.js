@@ -15,7 +15,7 @@ const ItineraryItem = styled.div`
     margin: .5rem 0 0;
     padding: .25rem .5rem;
     text-align: left;
-    width: 90%;
+    width: 80%;
 `;
 
 export default ItineraryItem;

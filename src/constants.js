@@ -10,7 +10,8 @@ const constants = {
             darkText: 'black',
             object: '#CFF',
             heavy: '#AFF',
-            bg: 'white'
+            bg: 'white',
+            expandableBg: 'white'
         },
         dark: {
             titleText: 'white',
@@ -22,7 +23,8 @@ const constants = {
             darkText: 'black',
             object: 'white',
             heavy: '#111',
-            bg: '#222'
+            bg: '#222',
+            expandableBg: 'lightgray'
         }
     },
     images: {

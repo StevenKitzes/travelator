@@ -1,14 +1,16 @@
 import React from 'react';
 
 import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";    // required by DatePicker
+import 'react-datepicker/dist/react-datepicker.css';    // required by DatePicker
+import '../react-datepicker-override.css';
 import { Portal } from 'react-overlays';                // required by DatePicker
 
 import CONSTANTS from '../constants';
 import ItineraryHelper from '../itinerary-helper';
 
-import ExpandableSelector from './ExpandableSelector';
+import ItineraryItemHeader from './ItineraryItemHeader';
 import ItineraryItem from './ItineraryItem';
+import ExpandableSelector from './ExpandableSelector';
 import ActionButton from './ActionButton';
 
 function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
@@ -27,32 +29,35 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
     }
 
     return (
-        <ItineraryItem theme={theme}>
-            <ExpandableSelector />{' '}
-            Departing:{' '}
-            <DatePicker
-              showTimeSelect
-              timeFormat='HH:mm'
-              dateFormat="MMMM d, h:mm aa"
-              selected={item.typeDetails.departureDate}
-              onChange={handleDepartureChange}
-              popperContainer={Portal}
-              popperPlacement='auto-right'
-              />{' '}
-            Arriving:{' '}
-            <DatePicker
-              showTimeSelect
-              timeFormat='HH:mm'
-              dateFormat="MMMM d, h:mm aa"
-              selected={item.typeDetails.arrivalDate}
-              onChange={handleArrivalChange}
-              popperContainer={Portal}
-              popperPlacement='auto-right'
-              />
-            <ActionButton
-                src={CONSTANTS.images.iconClose}
-                onClick={removeItineraryItem} />
-        </ItineraryItem>
+        <div>
+            <ItineraryItemHeader>Travel</ItineraryItemHeader>
+            <ItineraryItem theme={theme}>
+                <ExpandableSelector theme={theme} />{' '}
+                Departing:{' '}
+                <DatePicker
+                    showTimeSelect
+                    timeFormat='HH:mm'
+                    dateFormat="MMM d, HH:mm"
+                    selected={item.typeDetails.departureDate}
+                    onChange={handleDepartureChange}
+                    popperContainer={Portal}
+                    popperPlacement='auto-right'
+                    />{' '}
+                Arriving:{' '}
+                <DatePicker
+                    showTimeSelect
+                    timeFormat='HH:mm'
+                    dateFormat="MMM d, HH:mm"
+                    selected={item.typeDetails.arrivalDate}
+                    onChange={handleArrivalChange}
+                    popperContainer={Portal}
+                    popperPlacement='auto-right'
+                    />
+                <ActionButton
+                    src={CONSTANTS.images.iconClose}
+                    onClick={removeItineraryItem} />
+            </ItineraryItem>
+        </div>
     );
 }
 
