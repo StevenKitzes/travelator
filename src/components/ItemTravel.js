@@ -1,14 +1,14 @@
 import React from 'react';
 
 import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";  // required by above
-import ItineraryItem from './ItineraryItem';
-import { Portal } from 'react-overlays';
+import "react-datepicker/dist/react-datepicker.css";    // required by DatePicker
+import { Portal } from 'react-overlays';                // required by DatePicker
 
 import CONSTANTS from '../constants';
 import ItineraryHelper from '../itinerary-helper';
 
 import ExpandableSelector from './ExpandableSelector';
+import ItineraryItem from './ItineraryItem';
 import ActionButton from './ActionButton';
 
 function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
@@ -33,7 +33,7 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
             <DatePicker
               showTimeSelect
               timeFormat='HH:mm'
-              dateFormat="MMMM d h:mm aa"
+              dateFormat="MMMM d, h:mm aa"
               selected={item.typeDetails.departureDate}
               onChange={handleDepartureChange}
               popperContainer={Portal}
@@ -43,7 +43,7 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
             <DatePicker
               showTimeSelect
               timeFormat='HH:mm'
-              dateFormat="MMMM d h:mm aa"
+              dateFormat="MMMM d, h:mm aa"
               selected={item.typeDetails.arrivalDate}
               onChange={handleArrivalChange}
               popperContainer={Portal}
