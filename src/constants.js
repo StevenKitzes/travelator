@@ -32,6 +32,8 @@ const constants = {
         dark: {
             header: '/img/city.jpg'
         },
+        caretBlack: '/img/caret-black.png',
+        caretWhite: '/img/caret-white.png',
         iconClose: '/img/icon-close.png',
         iconUp: '/img/icon-up.png'
     },

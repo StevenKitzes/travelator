@@ -3,13 +3,10 @@ import styled from 'styled-components';
 const ActionButton = styled.img`
     cursor: pointer;
     float: right;
-    height: 1.5em;
-    margin: 0.4em 0 0 .2em;
+    height: 1.5rem;
+    margin: 0.1rem 0 0 .2rem;
     text-align: center;
-    transform: ${props => props.verticalMirror ?
-        'rotate(180deg)' :
-        'rotate(0deg)'};
-    width: 1.5em;
+    width: 1.5rem;
 `;
 
 export default ActionButton;
