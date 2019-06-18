@@ -5,7 +5,8 @@ import CONSTANTS from '../constants';
 function ExpandableSelector(props) {
     return (
         <div style={expandableSelectorStyle}>
-            <img style={iconStyle} src='/img/activity/custom-by-egor-rumyantsev.svg' /> <img style={caretStyle} src={CONSTANTS.images.caretBlack} />
+            <img style={iconStyle} src='/img/activity/custom-by-egor-rumyantsev.svg' />{' '}
+            <img style={caretStyle} src={CONSTANTS.images.caretBlack} />
         </div>
     );
 }
