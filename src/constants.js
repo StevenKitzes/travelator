@@ -47,6 +47,7 @@ const constants = {
         bicycle: 'bicycle',
         car: 'car',
         motorcycle: 'motorcycle',
+        public: 'public',
         rental: 'rental',
         rideshare: 'rideshare',
         walk: 'walk',
