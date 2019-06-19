@@ -47,6 +47,7 @@ const constants = {
     travelSubtypes: [
         'airfare',
         'bicycle',
+        'boat',
         'car',
         'motorcycle',
         'public',

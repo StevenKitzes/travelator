@@ -1,4 +1,5 @@
 import React from 'react';
+import uuid from 'uuid/v4';
 
 import CONSTANTS from '../constants';
 
@@ -17,7 +18,7 @@ function ExpandedSelector({expanded, theme, type, changeSubtype, toggleExpanded,
         <div style={getExpandedStyle(expanded, theme)} onClick={noParentClick}>
             {typeList.map((subtype) => {
                 return (
-                    <div style={{display: 'inline-block', marginRight: '.25rem'}}>
+                    <div style={{display: 'inline-block', marginRight: '.25rem'}} key={uuid()}>
                         <ExpandableIcon
                             gap
                             title={subtype.charAt(0).toUpperCase() + subtype.slice(1)}

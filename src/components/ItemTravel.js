@@ -11,11 +11,18 @@ import ItineraryHelper from '../itinerary-helper';
 import ItineraryItemHeader from './ItineraryItemHeader';
 import ItineraryItem from './ItineraryItem';
 import ExpandableSelector from './ExpandableSelector';
+import Cost from './Cost';
 import ActionButton from './ActionButton';
+import CustomSubtype from './CustomSubtype';
 
 function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
     const item = ItineraryHelper.getItineraryItemByKey(itemKey, itinerary);
 
+    // internal handlers
+    function handleCustomChange(event) {
+        item.customType = event.target.value;
+        setItinerary(Array.from(itinerary));
+    }
     function handleDepartureChange(date) {
         item.typeDetails.departureDate = date;
         setItinerary(Array.from(itinerary));
@@ -24,8 +31,21 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
         item.typeDetails.arrivalDate = date;
         setItinerary(Array.from(itinerary));
     }
+    function handleCostChange(event) {
+        if(isNaN(event.target.value)) {
+            return;
+        }
+        item.cost = event.target.value;
+        setItinerary(Array.from(itinerary));
+    }
+
+    // functions to be passed as props
     function changeSubtype(newType) {
         item.subtype = newType;
+        setItinerary(Array.from(itinerary));
+    }
+    function changeCustom(newCustom) {
+        item.customType = newCustom;
         setItinerary(Array.from(itinerary));
     }
     function removeItineraryItem() {
@@ -42,6 +62,11 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     subtype={item.subtype}
                     changeSubtype={changeSubtype}
                     typeList={CONSTANTS.travelSubtypes} />{' '}
+                {item.subtype === CONSTANTS.travelSubtypes.length - 1 ? 
+                    <CustomSubtype
+                        customType={item.customType}
+                        changeCustom={changeCustom} /> :
+                    null}{' '}
                 Departing:{' '}
                 <DatePicker
                     showTimeSelect
@@ -67,6 +92,9 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                 <ActionButton
                     src={CONSTANTS.images.iconClose}
                     onClick={removeItineraryItem} />
+                <Cost
+                    cost={item.cost}
+                    handleCostChange={handleCostChange} />
             </ItineraryItem>
         </div>
     );
