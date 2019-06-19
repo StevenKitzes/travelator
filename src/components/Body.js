@@ -24,7 +24,7 @@ function Body({theme, itinerary, setItinerary}) {
 
     return (
         <div style={getBodyStyle(themeColors)}>
-            {itinerary.length > 0 ? null : <h3>Add itinerary items to see them here.</h3>}
+            {itinerary.length > 0 ? null : <h6>Add itinerary items to see them here.</h6>}
             {itinerary.map((item) => {
                 switch(item.type) {
                     case CONSTANTS.travelType:
@@ -42,7 +42,7 @@ function Body({theme, itinerary, setItinerary}) {
                         );
                 }
             })}
-            {itinerary.length > 0 ? <h3>Itinerary items above.</h3> : null}
+            {itinerary.length > 0 ? <h6>Itinerary items above.</h6> : null}
             <AddButton theme={theme} onClick={addTravel}>
                 + Transport
             </AddButton>
