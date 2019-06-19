@@ -5,7 +5,7 @@ import CONSTANTS from '../constants';
 import ExpandableIcon from './ExpandableIcon';
 import ExpandedSelector from './ExpandedSelector';
 
-function ExpandableSelector({theme, type, subtype, typeList}) {
+function ExpandableSelector({theme, type, subtype, changeSubtype, typeList}) {
     const [expanded, setExpanded] = useState(false);
 
     function toggleExpanded() {
@@ -20,6 +20,8 @@ function ExpandableSelector({theme, type, subtype, typeList}) {
                 expanded={expanded}
                 theme={theme}
                 type={type}
+                changeSubtype={changeSubtype}
+                toggleExpanded={toggleExpanded}
                 typeList={typeList} />
         </div>
     );

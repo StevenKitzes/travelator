@@ -4,7 +4,11 @@ import CONSTANTS from '../constants';
 
 import ExpandableIcon from './ExpandableIcon';
 
-function ExpandedSelector({expanded, theme, type, typeList}) {
+function ExpandedSelector({expanded, theme, type, changeSubtype, toggleExpanded, typeList}) {
+    function handleIconClick(event) {
+        changeSubtype(typeList.indexOf(event.target.title.toLowerCase()));
+        toggleExpanded();
+    }
     function noParentClick(event) {
         event.stopPropagation();
     }
@@ -14,7 +18,11 @@ function ExpandedSelector({expanded, theme, type, typeList}) {
             {typeList.map((subtype) => {
                 return (
                     <div style={{display: 'inline-block', marginRight: '.25rem'}}>
-                        <ExpandableIcon gap title={subtype.charAt(0).toUpperCase() + subtype.slice(1)} src={`/img/${type}/${subtype}.svg`} />
+                        <ExpandableIcon
+                            gap
+                            title={subtype.charAt(0).toUpperCase() + subtype.slice(1)}
+                            src={`/img/${type}/${subtype}.svg`}
+                            onClick={handleIconClick} />
                     </div>
                 );
             })}

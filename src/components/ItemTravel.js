@@ -24,6 +24,10 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
         item.typeDetails.arrivalDate = date;
         setItinerary(Array.from(itinerary));
     }
+    function changeSubtype(newType) {
+        item.subtype = newType;
+        setItinerary(Array.from(itinerary));
+    }
     function removeItineraryItem() {
         ItineraryHelper.removeItineraryItemByKey(itemKey, itinerary, setItinerary);
     }
@@ -36,6 +40,7 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     theme={theme}
                     type={item.type}
                     subtype={item.subtype}
+                    changeSubtype={changeSubtype}
                     typeList={CONSTANTS.travelSubtypes} />{' '}
                 Departing:{' '}
                 <DatePicker

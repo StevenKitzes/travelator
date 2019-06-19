@@ -52,6 +52,7 @@ const constants = {
         'public',
         'rental',
         'rideshare',
+        'taxi',
         'walk',
         'custom'
     ],
