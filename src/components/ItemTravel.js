@@ -32,7 +32,11 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
         <div>
             <ItineraryItemHeader>Travel</ItineraryItemHeader>
             <ItineraryItem theme={theme}>
-                <ExpandableSelector theme={theme} />{' '}
+                <ExpandableSelector
+                    theme={theme}
+                    type={item.type}
+                    subtype={item.subtype}
+                    typeList={CONSTANTS.travelSubtypes} />{' '}
                 Departing:{' '}
                 <DatePicker
                     showTimeSelect
@@ -40,6 +44,7 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     dateFormat="MMM d, HH:mm"
                     selected={item.typeDetails.departureDate}
                     onChange={handleDepartureChange}
+                    // onBlur={whatever}    this will trigger a resort
                     popperContainer={Portal}
                     popperPlacement='auto-right'
                     />{' '}
@@ -50,6 +55,7 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     dateFormat="MMM d, HH:mm"
                     selected={item.typeDetails.arrivalDate}
                     onChange={handleArrivalChange}
+                    // onBlur={whatever}    this will trigger a resort
                     popperContainer={Portal}
                     popperPlacement='auto-right'
                     />

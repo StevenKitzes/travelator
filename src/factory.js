@@ -4,7 +4,7 @@ import uuid from 'uuid/v4';
 function getNewItineraryItem(type) {
     const itineraryItem = {
         type: type,
-        subtype: '',
+        subtype: 0,
         customType: '',
         cost: 0,
         notes: '',

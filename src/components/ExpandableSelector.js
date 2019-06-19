@@ -2,21 +2,25 @@ import React, {useState} from 'react';
 
 import CONSTANTS from '../constants';
 
-function ExpandableSelector({theme}) {
+import ExpandableIcon from './ExpandableIcon';
+import ExpandedSelector from './ExpandedSelector';
+
+function ExpandableSelector({theme, type, subtype, typeList}) {
     const [expanded, setExpanded] = useState(false);
 
     function toggleExpanded() {
         setExpanded(!expanded);
     }
-    function noParentClick(event) {
-        event.stopPropagation();
-    }
 
     return (
         <div style={getExpandableStyle(theme)} onClick={toggleExpanded}>
-            <img style={iconStyle} src='/img/travel/airfare.svg' />{' '}
+            <ExpandableIcon src={`/img/${type}/${CONSTANTS[type+'Subtypes'][subtype]}.svg`} />{' '}
             <img style={caretStyle} src={CONSTANTS.images.caretBlack} />{' '}
-            <div style={getExpandedStyle(expanded, theme)} onClick={noParentClick}>Expanded!</div>
+            <ExpandedSelector
+                expanded={expanded}
+                theme={theme}
+                type={type}
+                typeList={typeList} />
         </div>
     );
 }
@@ -34,27 +38,6 @@ function getExpandableStyle(theme) {
         padding: '.2rem .4rem',
         position: 'relative'
     };
-}
-function getExpandedStyle(expanded, theme) {
-    return {
-        backgroundColor: (theme === CONSTANTS.dark ?
-            CONSTANTS.colors.dark.expandableBg :
-            CONSTANTS.colors.light.expandableBg),
-        border: '.1rem solid gray',
-        borderRadius: '.25rem',
-        cursor: 'pointer',
-        display: expanded ? 'inline-block' : 'none',
-        left: '2.5rem',
-        margin: '-.25rem 0 0 0',
-        padding: '.2rem .4rem',
-        position: 'absolute',
-        zIndex: '1'
-    };
-}
-const iconStyle = {
-    height: '1rem',
-    margin: '-.3rem 0 0 0',
-    width: '1rem'
 }
 const caretStyle = {
     margin: '-.3rem 0 0 0'

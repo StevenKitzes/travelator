@@ -43,40 +43,40 @@ const constants = {
     dark: 'dark',
     light: 'light',
 
-    travelType: 'travelType',
-    travelSubtypes: {
-        airfare: 'airfare',
-        bicycle: 'bicycle',
-        car: 'car',
-        motorcycle: 'motorcycle',
-        public: 'public',
-        rental: 'rental',
-        rideshare: 'rideshare',
-        walk: 'walk',
-        custom: 'custom'
-    },
+    travelType: 'travel',
+    travelSubtypes: [
+        'airfare',
+        'bicycle',
+        'car',
+        'motorcycle',
+        'public',
+        'rental',
+        'rideshare',
+        'walk',
+        'custom'
+    ],
     
-    lodgingType: 'lodgingType',
-    lodgingSubtypes: {
-        camping: 'camping',
-        couch: 'couch',
-        hotel: 'hotel',
-        custom: 'custom'
-    },
+    lodgingType: 'lodging',
+    lodgingSubtypes: [
+        'camping',
+        'couch',
+        'hotel',
+        'custom'
+    ],
     
-    activityType: 'activityType',
-    activitySubtypes: {
-        custom: 'custom'
-    },
+    activityType: 'activity',
+    activitySubtypes: [
+        'custom'
+    ],
     
-    foodType: 'foodType',
-    foodSubTypes: {
-        bar: 'bar',
-        cooking: 'cooking',
-        restaurant: 'restaurant',
-        snacks: 'snacks',
-        custom: 'custom'
-    }
+    foodType: 'food',
+    foodSubTypes: [
+        'bar',
+        'cooking',
+        'restaurant',
+        'snacks',
+        'custom'
+    ]
 };
 
 export default constants;
