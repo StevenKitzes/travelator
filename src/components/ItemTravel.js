@@ -19,10 +19,6 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
     const item = ItineraryHelper.getItineraryItemByKey(itemKey, itinerary);
 
     // internal handlers
-    function handleCustomChange(event) {
-        item.customType = event.target.value;
-        setItinerary(Array.from(itinerary));
-    }
     function handleDepartureChange(date) {
         item.typeDetails.departureDate = date;
         setItinerary(Array.from(itinerary));

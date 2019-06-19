@@ -15,7 +15,10 @@ function ExpandableSelector({theme, type, subtype, changeSubtype, typeList}) {
     return (
         <div style={getExpandableStyle(theme)} onClick={toggleExpanded}>
             <ExpandableIcon src={`/img/${type}/${CONSTANTS[type+'Subtypes'][subtype]}.svg`} />{' '}
-            <img style={caretStyle} src={CONSTANTS.images.caretBlack} />{' '}
+            <img
+                style={caretStyle}
+                src={CONSTANTS.images.caretBlack}
+                alt='See options' />{' '}
             <ExpandedSelector
                 expanded={expanded}
                 theme={theme}

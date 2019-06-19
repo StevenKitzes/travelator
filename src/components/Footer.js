@@ -15,7 +15,7 @@ function Footer({theme}) {
                 This spiffy travel planning helper brought to you free as Open Source Software under the MIT License!  :)  Yay!
             </p>
             <p style={footerPStyle}>
-                Icons made by Egor Rumyantsev, Gregor Cresnar, Google, and Freepik from <a target="_blank" href='https://www.flaticon.com'>www.flaticon.com</a>
+                Icons made by Egor Rumyantsev, Gregor Cresnar, Google, and Freepik from <a target="_blank" rel='noopener noreferrer' href='https://www.flaticon.com'>www.flaticon.com</a>
             </p>
         </div>
     );
