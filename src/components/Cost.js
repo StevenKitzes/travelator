@@ -2,7 +2,7 @@ import React from 'react';
 
 function Cost({cost, handleCostChange}) {
     return (
-        <div style={{float: 'right'}}>
+        <div style={{display: 'inline-block'}}>
             $<input
                 value={cost}
                 onChange={handleCostChange}

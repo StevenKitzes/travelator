@@ -11,6 +11,8 @@ import ItineraryHelper from '../itinerary-helper';
 import ItineraryItemHeader from './ItineraryItemHeader';
 import ItineraryItem from './ItineraryItem';
 import ExpandableSelector from './ExpandableSelector';
+import Input from './Input';
+import Notes from './Notes';
 import Cost from './Cost';
 import ActionButton from './ActionButton';
 import CustomSubtype from './CustomSubtype';
@@ -44,6 +46,18 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
         item.customType = newCustom;
         setItinerary(Array.from(itinerary));
     }
+    function changeOrigin(newOrigin) {
+        item.typeDetails.origin = newOrigin;
+        setItinerary(Array.from(itinerary));
+    }
+    function changeDestination(newDestination) {
+        item.typeDetails.destination = newDestination;
+        setItinerary(Array.from(itinerary));
+    }
+    function changeNotes(newNotes) {
+        item.notes = newNotes;
+        setItinerary(Array.from(itinerary));
+    }
     function removeItineraryItem() {
         ItineraryHelper.removeItineraryItemByKey(itemKey, itinerary, setItinerary);
     }
@@ -63,7 +77,11 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                         customType={item.customType}
                         changeCustom={changeCustom} /> :
                     null}{' '}
-                Departing:{' '}
+                Departing{' '}
+                <Input
+                    placeholder='From'
+                    value={item.typeDetails.origin}
+                    valueModifier={changeOrigin} />{' '}
                 <DatePicker
                     showTimeSelect
                     timeFormat='HH:mm'
@@ -75,6 +93,10 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     popperPlacement='auto-right'
                     />{' '}
                 Arriving:{' '}
+                <Input
+                    placeholder='To'
+                    value={item.typeDetails.destination}
+                    valueModifier={changeDestination} />{' '}
                 <DatePicker
                     showTimeSelect
                     timeFormat='HH:mm'
@@ -84,13 +106,17 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     // onBlur={whatever}    this will trigger a resort
                     popperContainer={Portal}
                     popperPlacement='auto-right'
-                    />
-                <ActionButton
-                    src={CONSTANTS.images.iconClose}
-                    onClick={removeItineraryItem} />
+                    />{' '}
+                Notes:{' '}
+                <Notes
+                    notes={item.notes}
+                    changeNotes={changeNotes} />{' '}
                 <Cost
                     cost={item.cost}
                     handleCostChange={handleCostChange} />
+                <ActionButton
+                    src={CONSTANTS.images.iconClose}
+                    onClick={removeItineraryItem} />
             </ItineraryItem>
         </div>
     );
