@@ -12,8 +12,8 @@ function Notes({notes, changeNotes}) {
             placeholder='Notes'
             style={{
                 maxWidth: '25rem',
-                minWidth: '3rem',
-                width: 'calc('+notes.length+'rem / 1.5)'
+                minWidth: '6rem',
+                width: 'calc('+notes.length+'rem / 2)'
             }} />
     );
 }
