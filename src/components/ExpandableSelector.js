@@ -13,15 +13,15 @@ function ExpandableSelector({theme}) {
     }
 
     return (
-        <div style={getExpandableSelectorStyle(theme)} onClick={toggleExpanded}>
+        <div style={getExpandableStyle(theme)} onClick={toggleExpanded}>
             <img style={iconStyle} src='/img/travel/airfare.svg' />{' '}
             <img style={caretStyle} src={CONSTANTS.images.caretBlack} />{' '}
-            <div style={getExpandedSelectorStyle(expanded, theme)} onClick={noParentClick}>Expanded!</div>
+            <div style={getExpandedStyle(expanded, theme)} onClick={noParentClick}>Expanded!</div>
         </div>
     );
 }
 
-function getExpandableSelectorStyle(theme) {
+function getExpandableStyle(theme) {
     return {
         backgroundColor: (theme === CONSTANTS.dark ?
             CONSTANTS.colors.dark.expandableBg :
@@ -31,10 +31,11 @@ function getExpandableSelectorStyle(theme) {
         cursor: 'pointer',
         display: 'inline-block',
         margin: '-.2rem 0 0 0',
-        padding: '.2rem .4rem'
+        padding: '.2rem .4rem',
+        position: 'relative'
     };
 }
-function getExpandedSelectorStyle(expanded, theme) {
+function getExpandedStyle(expanded, theme) {
     return {
         backgroundColor: (theme === CONSTANTS.dark ?
             CONSTANTS.colors.dark.expandableBg :
@@ -43,7 +44,7 @@ function getExpandedSelectorStyle(expanded, theme) {
         borderRadius: '.25rem',
         cursor: 'pointer',
         display: expanded ? 'inline-block' : 'none',
-        left: '16rem',
+        left: '2.5rem',
         margin: '-.25rem 0 0 0',
         padding: '.2rem .4rem',
         position: 'absolute',
