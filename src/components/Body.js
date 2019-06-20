@@ -37,9 +37,6 @@ function Body({theme, itinerary, setItinerary}) {
         setItinerary(Array.from(itinerary));
     }
 
-    function reportItin() {
-        alert(JSON.stringify(itinerary));
-    }
     function downloadItinerary() {
         // output array for all properties of all itinerary items
         const output = [CONSTANTS.fileHeader];
@@ -96,14 +93,18 @@ function Body({theme, itinerary, setItinerary}) {
         output.push(item.notes);
         output.push(item.cost);
     }
+    function uploadItinerary() {
+        document.getElementById('upload-button').click();
+    }
 
     return (
         <div style={getBodyStyle(themeColors)}>
-            <AddButton theme={theme} onClick={reportItin}>
-                check itin state
-            </AddButton>
+            <input id='upload-button' style={getUploadButtonStyle(theme)} type='file' />
             <AddButton stretch theme={theme} onClick={downloadItinerary}>
                 Download Itinerary as Text
+            </AddButton>
+            <AddButton stretch theme={theme} onClick={uploadItinerary}>
+                Upload Itinerary from Text
             </AddButton>
             {itinerary.length > 0 ? null : <h6>Add itinerary items to see them here.</h6>}
             {itinerary.map((item) => {
@@ -179,6 +180,11 @@ function getBodyStyle(colors) {
         top: '15em',
         width: '100%'
     }
+}
+function getUploadButtonStyle(theme) {
+    return {
+        display: 'none'
+    };
 }
 
 export default Body;
