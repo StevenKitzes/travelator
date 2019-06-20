@@ -25,6 +25,10 @@ function ItemFood({itemKey, theme, itinerary, setItinerary}) {
         item.typeDetails.date = date;
         setItinerary(Array.from(itinerary));
     }
+    function handleDateBlur() {
+        ItineraryHelper.sortItineraryByDate(itinerary);
+        setItinerary(Array.from(itinerary));
+    }
     function handleCostChange(event) {
         if(isNaN(event.target.value)) {
             return;
@@ -81,7 +85,7 @@ function ItemFood({itemKey, theme, itinerary, setItinerary}) {
                     dateFormat="MMM d, HH:mm"
                     selected={item.typeDetails.date}
                     onChange={handleDateChange}
-                    // onBlur={whatever}    this will trigger a resort
+                    onBlur={handleDateBlur}
                     popperContainer={Portal}
                     popperPlacement='auto-right'
                     />{' '}

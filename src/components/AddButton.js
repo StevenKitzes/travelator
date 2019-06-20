@@ -10,14 +10,14 @@ const AddButton = styled.button`
     border-color: ${props => props.theme === CONSTANTS.dark ?
         CONSTANTS.colors.dark.heavy :
         CONSTANTS.colors.light.heavy};
-    border-radius: .3em;
+    border-radius: .3rem;
     color: black;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 1rem;
     font-weight: 600;
-    margin: .5em;
-    padding: .3em .6em;
-    width: 9em;
+    margin: .5rem;
+    padding: .3rem .6rem;
+    ${props => props.stretch ? '' : 'width: 9rem;'}
 `
 
 export default AddButton;

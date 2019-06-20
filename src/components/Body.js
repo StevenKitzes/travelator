@@ -2,6 +2,7 @@ import React from 'react';
 
 import CONSTANTS from './../constants';
 import Factory from '../factory';
+import capitalize from '../capitalize';
 
 import AddButton from './AddButton';
 import ItemTravel from './ItemTravel';
@@ -39,9 +40,71 @@ function Body({theme, itinerary, setItinerary}) {
     function reportItin() {
         alert(JSON.stringify(itinerary));
     }
+    function downloadItinerary() {
+        // output array for all properties of all itinerary items
+        const output = [CONSTANTS.fileHeader];
+
+        // for each itinerary item
+        for(let i = 0; i < itinerary.length; i++) {
+            const item = itinerary[i];
+
+            switch(item.type) {
+                case CONSTANTS.travelType:
+                    pushGenerics(output, item, CONSTANTS.travelSubtypes);
+                    output.push(item.typeDetails.origin);
+                    output.push(item.typeDetails.departureDate);
+                    output.push(item.typeDetails.destination);
+                    output.push(item.typeDetails.arrivalDate);
+                    break;
+                case CONSTANTS.lodgingType:
+                    pushGenerics(output, item, CONSTANTS.lodgingSubtypes);
+                    output.push(item.typeDetails.lodging);
+                    output.push(item.typeDetails.arrivalDate);
+                    output.push(item.typeDetails.departureDate);
+                    break;
+                case CONSTANTS.activityType:
+                    pushGenerics(output, item, CONSTANTS.activitySubtypes);
+                    output.push(item.typeDetails.venue);
+                    output.push(item.typeDetails.date);
+                    break;
+                case CONSTANTS.foodType:
+                    pushGenerics(output, item, CONSTANTS.foodSubtypes);
+                    output.push(item.typeDetails.venue);
+                    output.push(item.typeDetails.date);
+                    break;
+                default:
+                    console.log('Skipping unrecognized itinerary item type ' + item.type);
+                    break;
+            }
+        }
+
+        // execute download
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(output.join('\n')));
+        element.setAttribute('download', CONSTANTS.fileName);
+        element.style.display = 'none';
+
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+    function pushGenerics(output, item, subtypeSet) {
+        output.push(CONSTANTS.fileSeparator);
+        output.push(capitalize(item.type));
+        output.push(capitalize(subtypeSet[item.subtype]));
+        output.push(item.customType);
+        output.push(item.notes);
+        output.push(item.cost);
+    }
 
     return (
         <div style={getBodyStyle(themeColors)}>
+            <AddButton theme={theme} onClick={reportItin}>
+                check itin state
+            </AddButton>
+            <AddButton stretch theme={theme} onClick={downloadItinerary}>
+                Download Itinerary as Text
+            </AddButton>
             {itinerary.length > 0 ? null : <h6>Add itinerary items to see them here.</h6>}
             {itinerary.map((item) => {
                 switch(item.type) {
@@ -89,7 +152,7 @@ function Body({theme, itinerary, setItinerary}) {
             })}
             {itinerary.length > 0 ? <h6>Itinerary items above.</h6> : null}
             <AddButton theme={theme} onClick={addTravel}>
-                + Transport
+                + Travel
             </AddButton>
             <AddButton theme={theme} onClick={addLodging}>
                 + Lodging
@@ -100,7 +163,6 @@ function Body({theme, itinerary, setItinerary}) {
             <AddButton theme={theme} onClick={addFood}>
                 + Food
             </AddButton>
-            <button onClick={reportItin}>check itin state</button>
         </div>
     );
 }

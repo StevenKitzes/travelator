@@ -23,11 +23,25 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
     // internal handlers
     function handleDepartureChange(date) {
         item.typeDetails.departureDate = date;
+        ItineraryHelper.sortItineraryByDate(itinerary);
         setItinerary(Array.from(itinerary));
     }
     function handleArrivalChange(date) {
         item.typeDetails.arrivalDate = date;
         setItinerary(Array.from(itinerary));
+    }
+    function handleDepartureBlur() {
+        if(item.typeDetails.arrivalDate < item.typeDetails.departureDate) {
+            item.typeDetails.arrivalDate = new Date(item.typeDetails.departureDate);
+            setItinerary(Array.from(itinerary));
+        }
+    }
+    function handleArrivalBlur() {
+        if(item.typeDetails.arrivalDate < item.typeDetails.departureDate) {
+            item.typeDetails.departureDate = new Date(item.typeDetails.arrivalDate);
+            ItineraryHelper.sortItineraryByDate(itinerary);
+            setItinerary(Array.from(itinerary));
+        }
     }
     function handleCostChange(event) {
         if(isNaN(event.target.value)) {
@@ -88,7 +102,7 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     dateFormat="MMM d, HH:mm"
                     selected={item.typeDetails.departureDate}
                     onChange={handleDepartureChange}
-                    // onBlur={whatever}    this will trigger a resort
+                    onBlur={handleDepartureBlur}
                     popperContainer={Portal}
                     popperPlacement='auto-right'
                     />{' '}
@@ -103,7 +117,7 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     dateFormat="MMM d, HH:mm"
                     selected={item.typeDetails.arrivalDate}
                     onChange={handleArrivalChange}
-                    // onBlur={whatever}    this will trigger a resort
+                    onBlur={handleArrivalBlur}
                     popperContainer={Portal}
                     popperPlacement='auto-right'
                     />{' '}

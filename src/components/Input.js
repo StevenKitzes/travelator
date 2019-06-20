@@ -11,7 +11,7 @@ function Input({placeholder, value, valueModifier}) {
             onChange={handleChange}
             placeholder={placeholder}
             style={{
-                maxWidth: '7rem',
+                maxWidth: '10rem',
                 minWidth: '3rem',
                 width: 'calc('+value.length+'rem / 1.75)'
             }} />

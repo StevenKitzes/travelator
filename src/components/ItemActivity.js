@@ -23,6 +23,11 @@ function ItemActivity({itemKey, theme, itinerary, setItinerary}) {
     // internal handlers
     function handleDateChange(date) {
         item.typeDetails.date = date;
+        ItineraryHelper.sortItineraryByDate(itinerary);
+        setItinerary(Array.from(itinerary));
+    }
+    function handleDateBlur() {
+        ItineraryHelper.sortItineraryByDate(itinerary);
         setItinerary(Array.from(itinerary));
     }
     function handleCostChange(event) {
@@ -72,14 +77,14 @@ function ItemActivity({itemKey, theme, itinerary, setItinerary}) {
                     placeholder='Where'
                     value={item.typeDetails.venue}
                     valueModifier={changeVenue} />{' '}
-                Date/time:{' '}
+                When:{' '}
                 <DatePicker
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
                     selected={item.typeDetails.date}
                     onChange={handleDateChange}
-                    // onBlur={whatever}    this will trigger a resort
+                    onBlur={handleDateBlur}
                     popperContainer={Portal}
                     popperPlacement='auto-right'
                     />{' '}

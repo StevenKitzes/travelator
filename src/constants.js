@@ -1,4 +1,7 @@
 const constants = {
+    fileHeader: 'Travelator Itinerary',
+    fileName: 'Travelator Itinerary.txt',
+    fileSeparator:'+-----',
     colors: {
         light: {
             titleText: 'black',
