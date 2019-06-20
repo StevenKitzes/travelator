@@ -6,15 +6,18 @@ function Notes({notes, changeNotes}) {
     }
 
     return (
-        <input
-            value={notes}
-            onChange={handleChange}
-            placeholder='Notes'
-            style={{
-                maxWidth: '25rem',
-                minWidth: '6rem',
-                width: 'calc('+notes.length+'rem / 2)'
-            }} />
+        <div style={{float: 'right', marginRight: '.25rem'}}>
+            Notes:{' '}
+            <input
+                value={notes}
+                onChange={handleChange}
+                placeholder='Notes'
+                style={{
+                    maxWidth: '25rem',
+                    minWidth: '6rem',
+                    width: 'calc('+notes.length+'rem / 2)'
+                }} />{' '}
+        </div>
     );
 }
 

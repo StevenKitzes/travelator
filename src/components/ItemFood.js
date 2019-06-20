@@ -17,16 +17,12 @@ import Cost from './Cost';
 import ActionButton from './ActionButton';
 import CustomSubtype from './CustomSubtype';
 
-function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
+function ItemFood({itemKey, theme, itinerary, setItinerary}) {
     const item = ItineraryHelper.getItineraryItemByKey(itemKey, itinerary);
 
     // internal handlers
-    function handleDepartureChange(date) {
-        item.typeDetails.departureDate = date;
-        setItinerary(Array.from(itinerary));
-    }
-    function handleArrivalChange(date) {
-        item.typeDetails.arrivalDate = date;
+    function handleDateChange(date) {
+        item.typeDetails.date = date;
         setItinerary(Array.from(itinerary));
     }
     function handleCostChange(event) {
@@ -46,12 +42,8 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
         item.customType = newCustom;
         setItinerary(Array.from(itinerary));
     }
-    function changeOrigin(newOrigin) {
-        item.typeDetails.origin = newOrigin;
-        setItinerary(Array.from(itinerary));
-    }
-    function changeDestination(newDestination) {
-        item.typeDetails.destination = newDestination;
+    function changeVenue(newVenue) {
+        item.typeDetails.venue = newVenue;
         setItinerary(Array.from(itinerary));
     }
     function changeNotes(newNotes) {
@@ -64,45 +56,31 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
 
     return (
         <div>
-            <ItineraryItemHeader>Travel</ItineraryItemHeader>
+            <ItineraryItemHeader>Food</ItineraryItemHeader>
             <ItineraryItem theme={theme}>
                 <ExpandableSelector
                     theme={theme}
                     type={item.type}
                     subtype={item.subtype}
                     changeSubtype={changeSubtype}
-                    typeList={CONSTANTS.travelSubtypes} />{' '}
-                {item.subtype === CONSTANTS.travelSubtypes.length - 1 ? 
+                    typeList={CONSTANTS.foodSubtypes} />{' '}
+                {item.subtype === CONSTANTS.foodSubtypes.length - 1 ? 
                     <CustomSubtype
                         customType={item.customType}
                         changeCustom={changeCustom} /> :
-                    null}{' '}
-                Departing{' '}
+                null}{' '}
+                Venue:{' '}
                 <Input
-                    placeholder='From'
-                    value={item.typeDetails.origin}
-                    valueModifier={changeOrigin} />{' '}
+                    placeholder='Where'
+                    value={item.typeDetails.venue}
+                    valueModifier={changeVenue} />{' '}
+                Date/time:{' '}
                 <DatePicker
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
-                    selected={item.typeDetails.departureDate}
-                    onChange={handleDepartureChange}
-                    // onBlur={whatever}    this will trigger a resort
-                    popperContainer={Portal}
-                    popperPlacement='auto-right'
-                    />{' '}
-                Arriving{' '}
-                <Input
-                    placeholder='To'
-                    value={item.typeDetails.destination}
-                    valueModifier={changeDestination} />{' '}
-                <DatePicker
-                    showTimeSelect
-                    timeFormat='HH:mm'
-                    dateFormat="MMM d, HH:mm"
-                    selected={item.typeDetails.arrivalDate}
-                    onChange={handleArrivalChange}
+                    selected={item.typeDetails.date}
+                    onChange={handleDateChange}
                     // onBlur={whatever}    this will trigger a resort
                     popperContainer={Portal}
                     popperPlacement='auto-right'
@@ -121,4 +99,4 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
     );
 }
 
-export default ItemTravel;
+export default ItemFood;

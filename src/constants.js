@@ -72,7 +72,7 @@ const constants = {
     ],
     
     foodType: 'food',
-    foodSubTypes: [
+    foodSubtypes: [
         'bar',
         'cooking',
         'restaurant',

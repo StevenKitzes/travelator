@@ -24,18 +24,20 @@ function getNewItineraryItem(type) {
             break;
         case CONSTANTS.lodgingType:
             itineraryItem.typeDetails = {
+                lodging: '',
                 arrivalDate: (new Date()).setMinutes(0),
                 departureDate: (new Date()).setMinutes(0)
             };
             break;
         case CONSTANTS.activityType:
             itineraryItem.typeDetails = {
-                date: (new Date()).setMinutes(0),
-                durationHours: 0
+                venue: '',
+                date: (new Date()).setMinutes(0)
             };
             break;
         case CONSTANTS.foodType:
             itineraryItem.typeDetails = {
+                venue: '',
                 date: (new Date()).setMinutes(0)
             };
             break;
