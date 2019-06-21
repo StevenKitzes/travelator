@@ -22,23 +22,23 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
 
     // internal handlers
     function handleDepartureChange(date) {
-        item.typeDetails.departureDate = date;
+        item.date = date;
         ItineraryHelper.sortItineraryByDate(itinerary);
         setItinerary(Array.from(itinerary));
     }
     function handleArrivalChange(date) {
-        item.typeDetails.arrivalDate = date;
+        item.typeDetails.secondaryDate = date;
         setItinerary(Array.from(itinerary));
     }
     function handleDepartureBlur() {
-        if(item.typeDetails.arrivalDate < item.typeDetails.departureDate) {
-            item.typeDetails.arrivalDate = new Date(item.typeDetails.departureDate);
+        if(item.typeDetails.secondaryDate < item.date) {
+            item.typeDetails.secondaryDate = new Date(item.date);
             setItinerary(Array.from(itinerary));
         }
     }
     function handleArrivalBlur() {
-        if(item.typeDetails.arrivalDate < item.typeDetails.departureDate) {
-            item.typeDetails.departureDate = new Date(item.typeDetails.arrivalDate);
+        if(item.typeDetails.secondaryDate < item.date) {
+            item.date = new Date(item.typeDetails.secondaryDate);
             ItineraryHelper.sortItineraryByDate(itinerary);
             setItinerary(Array.from(itinerary));
         }
@@ -100,7 +100,7 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
-                    selected={item.typeDetails.departureDate}
+                    selected={item.date}
                     onChange={handleDepartureChange}
                     onBlur={handleDepartureBlur}
                     popperContainer={Portal}
@@ -115,7 +115,7 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
-                    selected={item.typeDetails.arrivalDate}
+                    selected={item.typeDetails.secondaryDate}
                     onChange={handleArrivalChange}
                     onBlur={handleArrivalBlur}
                     popperContainer={Portal}

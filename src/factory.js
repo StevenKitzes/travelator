@@ -1,17 +1,26 @@
 import CONSTANTS from './constants';
 import uuid from 'uuid/v4';
 
-function getNewItineraryItem(
+const Factory = {};
+
+Factory.detailed = function(
     // generics
     type, subtype = 0, customType = '', notes = '', cost = 0,
     // specifics
-    dDate = null, aDate = null, origin = '', destination = '',
-    date = null, lodging = '', venue = ''
+    date = null, secondaryDate = null, origin = '', destination = '',
+    lodging = '', venue = ''
 ) {
+    if(!date) {
+        date = new Date();
+        date.setMinutes(0);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+    }
     const itineraryItem = {
         type: type,
         subtype: subtype,
         customType: customType,
+        date: new Date(date),
         notes: notes,
         cost: cost,
         key: uuid(),
@@ -21,43 +30,29 @@ function getNewItineraryItem(
 
     switch(type) {
         case CONSTANTS.travelType: {
-            if(!dDate) {
-                dDate = new Date();
-                dDate.setMinutes(0);
-                dDate.setSeconds(0);
-                dDate.setMilliseconds(0);
-            }
-            if(!aDate) {
-                aDate = new Date();
-                aDate.setMinutes(0);
-                aDate.setSeconds(0);
-                aDate.setMilliseconds(0);
+            if(!secondaryDate) {
+                secondaryDate = new Date();
+                secondaryDate.setMinutes(0);
+                secondaryDate.setSeconds(0);
+                secondaryDate.setMilliseconds(0);
             }
             itineraryItem.typeDetails = {
                 origin: origin,
-                departureDate: dDate,
                 destination: destination,
-                arrivalDate: aDate
+                secondaryDate: new Date(secondaryDate)
             };
             break;
         }
         case CONSTANTS.lodgingType: {
-            if(!dDate) {
-                dDate = new Date();
-                dDate.setMinutes(0);
-                dDate.setSeconds(0);
-                dDate.setMilliseconds(0);
-            }
-            if(!aDate) {
-                aDate = new Date();
-                aDate.setMinutes(0);
-                aDate.setSeconds(0);
-                aDate.setMilliseconds(0);
+            if(!secondaryDate) {
+                secondaryDate = new Date();
+                secondaryDate.setMinutes(0);
+                secondaryDate.setSeconds(0);
+                secondaryDate.setMilliseconds(0);
             }
             itineraryItem.typeDetails = {
                 lodging: lodging,
-                arrivalDate: aDate,
-                departureDate: dDate
+                secondaryDate: new Date(secondaryDate)
             };
             break;
         }
@@ -70,7 +65,7 @@ function getNewItineraryItem(
             }
             itineraryItem.typeDetails = {
                 venue: venue,
-                date: date
+                date: new Date(date)
             };
             break;
         }
@@ -83,7 +78,7 @@ function getNewItineraryItem(
             }
             itineraryItem.typeDetails = {
                 venue: venue,
-                date: date
+                date: new Date(date)
             };
             break;
         }
@@ -95,5 +90,8 @@ function getNewItineraryItem(
 
     return itineraryItem;
 }
+Factory.simple = function(type, date) {
+    return Factory.detailed(type, undefined, undefined, undefined, undefined, date);
+}
 
-export default getNewItineraryItem;
+export default Factory;

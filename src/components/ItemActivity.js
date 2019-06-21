@@ -22,7 +22,7 @@ function ItemActivity({itemKey, theme, itinerary, setItinerary}) {
 
     // internal handlers
     function handleDateChange(date) {
-        item.typeDetails.date = date;
+        item.date = date;
         ItineraryHelper.sortItineraryByDate(itinerary);
         setItinerary(Array.from(itinerary));
     }
@@ -82,7 +82,7 @@ function ItemActivity({itemKey, theme, itinerary, setItinerary}) {
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
-                    selected={item.typeDetails.date}
+                    selected={item.date}
                     onChange={handleDateChange}
                     onBlur={handleDateBlur}
                     popperContainer={Portal}

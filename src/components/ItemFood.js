@@ -22,7 +22,7 @@ function ItemFood({itemKey, theme, itinerary, setItinerary}) {
 
     // internal handlers
     function handleDateChange(date) {
-        item.typeDetails.date = date;
+        item.date = date;
         setItinerary(Array.from(itinerary));
     }
     function handleDateBlur() {
@@ -83,7 +83,7 @@ function ItemFood({itemKey, theme, itinerary, setItinerary}) {
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
-                    selected={item.typeDetails.date}
+                    selected={item.date}
                     onChange={handleDateChange}
                     onBlur={handleDateBlur}
                     popperContainer={Portal}

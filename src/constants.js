@@ -2,6 +2,9 @@ const constants = {
     fileHeader: 'Travelator Itinerary',
     fileName: 'Travelator Itinerary.txt',
     fileSeparator:'+-----',
+    badFileHeader: 'Error: unrecognized file header.',
+    badFileSeparator: 'Error: unrecognized file format.',
+    badFileContent: 'Error: unrecognized content formatting.',
     colors: {
         light: {
             titleText: 'black',

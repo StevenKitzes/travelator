@@ -2,6 +2,7 @@ import React from 'react';
 
 import CONSTANTS from './../constants';
 import Factory from '../factory';
+import ItineraryHelper from '../itinerary-helper';
 import capitalize from '../capitalize';
 
 import AddButton from './AddButton';
@@ -17,22 +18,22 @@ function Body({theme, itinerary, setItinerary}) {
         CONSTANTS.colors.light;
 
     function addTravel() {
-        const travelItem = Factory(CONSTANTS.travelType);
+        const travelItem = Factory.simple(CONSTANTS.travelType, ItineraryHelper.getLatestDate(itinerary));
         itinerary.push(travelItem);
         setItinerary(Array.from(itinerary));
     }
     function addLodging() {
-        const lodgingItem = Factory(CONSTANTS.lodgingType);
+        const lodgingItem = Factory.simple(CONSTANTS.lodgingType, ItineraryHelper.getLatestDate(itinerary));
         itinerary.push(lodgingItem);
         setItinerary(Array.from(itinerary));
     }
     function addActivity() {
-        const activityItem = Factory(CONSTANTS.activityType);
+        const activityItem = Factory.simple(CONSTANTS.activityType, ItineraryHelper.getLatestDate(itinerary));
         itinerary.push(activityItem);
         setItinerary(Array.from(itinerary));
     }
     function addFood() {
-        const foodItem = Factory(CONSTANTS.foodType);
+        const foodItem = Factory.simple(CONSTANTS.foodType, ItineraryHelper.getLatestDate(itinerary));
         itinerary.push(foodItem);
         setItinerary(Array.from(itinerary));
     }
@@ -96,10 +97,46 @@ function Body({theme, itinerary, setItinerary}) {
     function uploadItinerary() {
         document.getElementById('upload-button').click();
     }
+    function handleUpload(event) {
+        const file = event.target.files[0], fileReader = new FileReader();
+        fileReader.readAsText(file, 'UTF-8');
+        fileReader.onload = (event) => {
+            const input = event.target.result.split('\n');
+            try {
+                if(input.length < 3) {
+                    throw new Error(CONSTANTS.badFileContent);
+                }
+                if(input[0] !== CONSTANTS.fileHeader) {
+                    throw new Error(CONSTANTS.badFileHeader);
+                }
+                if(input[1] !== CONSTANTS.fileSeparator) {
+                    throw new Error(CONSTANTS.badFileSeparator);
+                }
+
+                let line = 2;
+                while(line < input.length) {
+                    switch(input[line].toLowerCase()) {
+                        case CONSTANTS.travelType:
+                            if(input.length < line + 9) {
+                                throw new Error(CONSTANTS.badFileContent);
+                            }
+                            // read and validate type of all travel type input
+                            break;
+                    }
+                }
+            } catch(err) {
+                console.log(err);
+            }
+        };
+    }
 
     return (
         <div style={getBodyStyle(themeColors)}>
-            <input id='upload-button' style={getUploadButtonStyle(theme)} type='file' />
+            <input
+                id='upload-button'
+                style={getUploadButtonStyle(theme)}
+                type='file'
+                onChange={handleUpload} />
             <AddButton stretch theme={theme} onClick={downloadItinerary}>
                 Download Itinerary as Text
             </AddButton>
