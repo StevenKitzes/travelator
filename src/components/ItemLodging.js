@@ -74,7 +74,9 @@ function ItemLodging({itemKey, theme, itinerary, setItinerary}) {
 
     return (
         <div>
-            <ItineraryItemHeader>Lodging</ItineraryItemHeader>
+        <ItineraryItemHeader theme={theme}>
+            Lodging
+        </ItineraryItemHeader>
             <ItineraryItem theme={theme}>
                 <ExpandableSelector
                     theme={theme}
@@ -84,16 +86,21 @@ function ItemLodging({itemKey, theme, itinerary, setItinerary}) {
                     typeList={CONSTANTS.lodgingSubtypes} />{' '}
                 {item.subtype === CONSTANTS.lodgingSubtypes.length - 1 ? 
                     <CustomSubtype
+                        theme={theme}
                         customType={item.customType}
                         changeCustom={changeCustom} /> :
                     null}{' '}
                 At:{' '}
                 <Input
+                    theme={theme}
                     placeholder='Where'
                     value={item.typeDetails.lodging}
                     valueModifier={changeLodging} />{' '}
                 Arriving:{' '}
                 <DatePicker
+                    className={theme === CONSTANTS.dark ?
+                        'input-dark' :
+                        'input-light'}
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
@@ -105,6 +112,9 @@ function ItemLodging({itemKey, theme, itinerary, setItinerary}) {
                     />{' '}
                 Departing:{' '}
                 <DatePicker
+                    className={theme === CONSTANTS.dark ?
+                        'input-dark' :
+                        'input-light'}
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
@@ -118,9 +128,11 @@ function ItemLodging({itemKey, theme, itinerary, setItinerary}) {
                     src={CONSTANTS.images.iconClose}
                     onClick={removeItineraryItem} />
                 <Cost
+                    theme={theme}
                     cost={item.cost}
                     handleCostChange={handleCostChange} />
                 <Notes
+                    theme={theme}
                     notes={item.notes}
                     changeNotes={changeNotes} />{' '}
             </ItineraryItem>

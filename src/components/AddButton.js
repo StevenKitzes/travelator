@@ -11,7 +11,9 @@ const AddButton = styled.button`
         CONSTANTS.colors.dark.heavy :
         CONSTANTS.colors.light.heavy};
     border-radius: .3rem;
-    color: black;
+    color: ${props => props.theme === CONSTANTS.dark ?
+        CONSTANTS.colors.dark.text :
+        CONSTANTS.colors.light.text};
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;

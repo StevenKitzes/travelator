@@ -17,7 +17,9 @@ const constants = {
             object: '#CFF',
             heavy: '#AFF',
             bg: 'white',
-            expandableBg: 'white'
+            expandableBg: 'white',
+            headerBg: '#EEE',
+            headerText: 'black'
         },
         dark: {
             titleText: 'white',
@@ -27,10 +29,12 @@ const constants = {
             themeButtonBg: 'rgba(255,255,255,.75)',
             text: 'white',
             darkText: 'black',
-            object: 'white',
+            object: '#333',
             heavy: '#111',
             bg: '#222',
-            expandableBg: 'lightgray'
+            expandableBg: 'lightgray',
+            headerBg: '#888',
+            headerText: 'black'
         }
     },
     images: {

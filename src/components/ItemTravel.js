@@ -76,9 +76,12 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
         ItineraryHelper.removeItineraryItemByKey(itemKey, itinerary, setItinerary);
     }
 
+    console.log(JSON.stringify(item));
     return (
         <div>
-            <ItineraryItemHeader>Travel</ItineraryItemHeader>
+            <ItineraryItemHeader theme={theme}>
+                Travel
+            </ItineraryItemHeader>
             <ItineraryItem theme={theme}>
                 <ExpandableSelector
                     theme={theme}
@@ -88,15 +91,20 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     typeList={CONSTANTS.travelSubtypes} />{' '}
                 {item.subtype === CONSTANTS.travelSubtypes.length - 1 ? 
                     <CustomSubtype
+                        theme={theme}
                         customType={item.customType}
                         changeCustom={changeCustom} /> :
                     null}{' '}
                 Departing{' '}
                 <Input
+                    theme={theme}
                     placeholder='From'
                     value={item.typeDetails.origin}
                     valueModifier={changeOrigin} />{' '}
                 <DatePicker
+                    className={theme === CONSTANTS.dark ?
+                        'input-dark' :
+                        'input-light'}
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
@@ -108,10 +116,14 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     />{' '}
                 Arriving{' '}
                 <Input
+                    theme={theme}
                     placeholder='To'
                     value={item.typeDetails.destination}
                     valueModifier={changeDestination} />{' '}
                 <DatePicker
+                    className={theme === CONSTANTS.dark ?
+                        'input-dark' :
+                        'input-light'}
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
@@ -125,9 +137,11 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     src={CONSTANTS.images.iconClose}
                     onClick={removeItineraryItem} />
                 <Cost
+                    theme={theme}
                     cost={item.cost}
                     handleCostChange={handleCostChange} />
                 <Notes
+                    theme={theme}
                     notes={item.notes}
                     changeNotes={changeNotes} />{' '}
             </ItineraryItem>

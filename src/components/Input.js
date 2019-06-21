@@ -1,19 +1,24 @@
 import React from 'react';
 
-function Input({placeholder, value, valueModifier}) {
+import CONSTANTS from '../constants';
+
+function Input({placeholder, value, valueModifier, theme}) {
     function handleChange(event) {
         valueModifier(event.target.value);
     }
-
+    console.log(theme);
     return (
         <input
+            className={theme === CONSTANTS.dark ?
+                'input-dark' :
+                'input-light'}
             value={value}
             onChange={handleChange}
             placeholder={placeholder}
             style={{
                 maxWidth: '10rem',
                 minWidth: '3rem',
-                width: 'calc('+value.length+'rem / 1.75)'
+                width: 'calc(' + value.length +'rem / 1.75)'
             }} />
     );
 }

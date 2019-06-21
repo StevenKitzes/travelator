@@ -1,6 +1,8 @@
 import React from 'react';
 
-function Notes({notes, changeNotes}) {
+import CONSTANTS from '../constants';
+
+function Notes({notes, changeNotes, theme}) {
     function handleChange(event) {
         changeNotes(event.target.value);
     }
@@ -9,6 +11,9 @@ function Notes({notes, changeNotes}) {
         <div style={{float: 'right', marginRight: '.25rem'}}>
             Notes:{' '}
             <input
+                className={theme === CONSTANTS.dark ?
+                    'input-dark' :
+                    'input-light'}
                 value={notes}
                 onChange={handleChange}
                 placeholder='Notes'

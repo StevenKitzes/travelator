@@ -61,7 +61,9 @@ function ItemActivity({itemKey, theme, itinerary, setItinerary}) {
 
     return (
         <div>
-            <ItineraryItemHeader>Activity</ItineraryItemHeader>
+        <ItineraryItemHeader theme={theme}>
+            Activity
+        </ItineraryItemHeader>
             <ItineraryItem theme={theme}>
                 <ExpandableSelector
                     theme={theme}
@@ -70,15 +72,20 @@ function ItemActivity({itemKey, theme, itinerary, setItinerary}) {
                     changeSubtype={changeSubtype}
                     typeList={CONSTANTS.activitySubtypes} />{' '}
                 <CustomSubtype
+                    theme={theme}
                     customType={item.customType}
                     changeCustom={changeCustom} />{' '}
                 Where:{' '}
                 <Input
+                    theme={theme}
                     placeholder='Where'
                     value={item.typeDetails.venue}
                     valueModifier={changeVenue} />{' '}
                 When:{' '}
                 <DatePicker
+                    className={theme === CONSTANTS.dark ?
+                        'input-dark' :
+                        'input-light'}
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
@@ -92,9 +99,11 @@ function ItemActivity({itemKey, theme, itinerary, setItinerary}) {
                     src={CONSTANTS.images.iconClose}
                     onClick={removeItineraryItem} />
                 <Cost
+                    theme={theme}
                     cost={item.cost}
                     handleCostChange={handleCostChange} />
                 <Notes
+                    theme={theme}
                     notes={item.notes}
                     changeNotes={changeNotes} />{' '}
             </ItineraryItem>

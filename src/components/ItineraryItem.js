@@ -9,7 +9,9 @@ const ItineraryItem = styled.div`
     border: .2em solid ${props => props.theme === CONSTANTS.dark ?
         CONSTANTS.colors.dark.heavy :
         CONSTANTS.colors.light.heavy};
-    color: black;
+    color: ${props => props.theme === CONSTANTS.dark ?
+        CONSTANTS.colors.dark.text :
+        CONSTANTS.colors.light.text};
     border-radius: .75rem;
     display: inline-block;
     margin: .5rem 0 0;
