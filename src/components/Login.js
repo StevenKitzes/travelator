@@ -16,6 +16,7 @@ function Login({theme}) {
 
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
+    const [passConf, setPassConf] = useState('');
     const [formType, setFormType] = useState('login');
     function setModeLogin() {
         setFormType('login');
@@ -28,6 +29,9 @@ function Login({theme}) {
     }
     function handlePassChange(newPass) {
         setPass(newPass);
+    }
+    function handlePassConfChange(newPassConf) {
+        setPassConf(newPassConf);
     }
 
     function submit() {
@@ -58,7 +62,10 @@ function Login({theme}) {
                 callback={setModeRegister}
                 phrase='Register'
                 active={formType === 'register'} />
-            <div style={{margin: '1rem 0 0 0', position: 'relative'}}>
+
+            <div style={requiredFieldsStyle}>All fields required</div>
+
+            <div style={loginInputDivStyle}>
                 <InputHeader id='email-header' theme={theme}>
                     Email
                 </InputHeader>
@@ -68,7 +75,7 @@ function Login({theme}) {
                     value={email}
                     valueModifier={handleEmailChange} /><br />
             </div>
-            <div style={{margin: '1rem 0 0 0', position: 'relative'}}>
+            <div style={loginInputDivStyle}>
                 <InputHeader id='password-header' theme={theme}>
                     Password
                 </InputHeader>
@@ -78,14 +85,33 @@ function Login({theme}) {
                     placeholder='Password'
                     value={pass}
                     valueModifier={handlePassChange} />{' '}
-            </div><br /><br />
-            <AddButton theme={theme} onClick={submit}>
+            </div>
+            {
+                formType === 'login' ? null :
+                <div style={loginInputDivStyle}>
+                    <InputHeader id='password-confirm-header' theme={theme}>
+                        Confirm
+                    </InputHeader>
+                    <InputLogin
+                        password
+                        theme={theme}
+                        placeholder='Confirm password'
+                        value={passConf}
+                        valueModifier={handlePassConfChange} />{' '}
+                </div>
+            }
+            <AddButton style={{margin: '.5rem 0 0 0'}} theme={theme} onClick={submit}>
                 Submit
             </AddButton>
         </div>
     );
 }
 
+const requiredFieldsStyle = {
+    fontSize: '.7rem',
+    marginBottom: '.5rem',
+    padding: '0'
+};
 function getLoginStyle(colors) {
     return {
         backgroundColor: colors.bg,
@@ -99,5 +125,11 @@ function getLoginStyle(colors) {
         width: '100%'
     }
 }
+const loginInputDivStyle = {
+    height: '1.5rem',
+    lineHeight: '1.5rem',
+    margin: '0 0 1rem 0',
+    position: 'relative'
+};
 
 export default Login;

@@ -1,0 +1,7 @@
+{
+    "cognito": {
+        "REGION": /*aws region*/,
+        "USER_POOL_ID": /*user pool id from AWS console/cognito*/,
+        "APP_CLIENT_ID": /*app client id for specific client app from AWS console in cognito*/
+    }
+}
