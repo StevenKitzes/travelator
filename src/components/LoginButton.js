@@ -12,7 +12,7 @@ function getLoginStyle(theme) {
     return {
         backgroundColor: theme === CONSTANTS.dark ?
             CONSTANTS.colors.dark.heavy :
-            CONSTANTS.colors.light.heavy,
+            CONSTANTS.colors.light.object,
         borderBottom: `.15rem solid ${theme === CONSTANTS.dark ?
             'gray' :
             'black'}`,
