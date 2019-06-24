@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Header from './Header';
 import Body from './Body';
+import Login from './Login';
 import Footer from './Footer';
 
 function App() {
@@ -11,7 +13,18 @@ function App() {
   return (
     <div style={appStyles}>
       <Header theme={theme} setTheme={setTheme} />
-      <Body theme={theme} itinerary={itinerary} setItinerary={setItinerary} />
+      <Router>
+        <Route exact path='/' render={
+          (routeProps) => { return (
+            <Body {...routeProps} theme={theme} itinerary={itinerary} setItinerary={setItinerary} />
+          ); }
+        } />
+        <Route path='/login/' render={
+          (routeProps) => { return (
+            <Login {...routeProps} theme={theme} />
+          ); }
+        } />
+      </Router>
       <Footer theme={theme} />
     </div>
   );

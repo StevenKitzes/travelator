@@ -24,3 +24,14 @@ code {
   background-color: black;
   color: lightgray;
 }
+.login-input {
+  border: .1rem solid gray;
+  border-radius: 0 .5rem .5rem 0;
+  display: inline-block;
+  height: 1.75rem;
+  left: calc(50% - 4rem);
+  padding: 0 0 0 .5rem;
+  position: absolute;
+  top: 0;
+  width: 15rem;
+}

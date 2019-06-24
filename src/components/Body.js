@@ -1,10 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import CONSTANTS from './../constants';
 import Factory from '../factory';
 import ItineraryHelper from '../itinerary-helper';
 import capitalize from '../capitalize';
 
+import LoginButton from './LoginButton';
 import AddButton from './AddButton';
 import ItemTravel from './ItemTravel';
 import ItemLodging from './ItemLodging';
@@ -265,6 +267,9 @@ function Body({theme, itinerary, setItinerary}) {
             <AddButton stretch theme={theme} onClick={uploadItinerary}>
                 Upload Itinerary from Text
             </AddButton>
+            <Link to='/login/'>
+                <LoginButton theme={theme} phrase='Login / Register' />
+            </Link>
             {itinerary.length > 0 ? null : <h6>Add itinerary items to see them here.</h6>}
             {itinerary.map((item) => {
                 switch(item.type) {
@@ -330,10 +335,11 @@ function Body({theme, itinerary, setItinerary}) {
 function getBodyStyle(colors) {
     return {
         backgroundColor: colors.bg,
+        border: 'none',
         color: colors.text,
         height: 'calc(100% - 18em)',
         overflowY: 'auto',
-        paddingTop: '0.5em',
+        // paddingTop: '0.5em',
         position: 'fixed',
         textAlign: 'center',
         top: '15em',

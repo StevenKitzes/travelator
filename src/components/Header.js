@@ -31,7 +31,8 @@ const headerContainerStyle = {
     height: '15em',
     left: '0',
     position: 'fixed',
-    top: '0'
+    top: '0',
+    width: '100%'
 }
 function getThemeButtonStyle(theme) {
     return {
@@ -55,12 +56,12 @@ const headerImageStyle = {
 function getTitleStyle(theme) {
     return {
         backgroundColor: theme.titleBg,
-        bottom: '.7em',
+        bottom: '.7rem',
         color: theme.titleText,
-        fontSize: '2em',
+        fontSize: '2rem',
         fontWeight: '900',
-        left: '.7em',
-        padding: '.2em .5em',
+        left: '.7rem',
+        padding: '.2rem .5rem',
         position: 'absolute'
     };
 }

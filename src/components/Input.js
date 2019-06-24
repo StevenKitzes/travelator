@@ -6,7 +6,6 @@ function Input({placeholder, value, valueModifier, theme}) {
     function handleChange(event) {
         valueModifier(event.target.value);
     }
-    console.log(theme);
     return (
         <input
             className={theme === CONSTANTS.dark ?

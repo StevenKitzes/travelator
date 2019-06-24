@@ -76,7 +76,6 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
         ItineraryHelper.removeItineraryItemByKey(itemKey, itinerary, setItinerary);
     }
 
-    console.log(JSON.stringify(item));
     return (
         <div>
             <ItineraryItemHeader theme={theme}>
