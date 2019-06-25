@@ -19,7 +19,7 @@ function App() {
             <Body {...routeProps} theme={theme} itinerary={itinerary} setItinerary={setItinerary} />
           ); }
         } />
-        <Route path='/login/' render={
+        <Route exact path='/login/' render={
           (routeProps) => { return (
             <Login {...routeProps} theme={theme} />
           ); }

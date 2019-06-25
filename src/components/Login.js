@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 
+import { Auth } from 'aws-amplify';
+
 import CONSTANTS from '../constants';
 
 import LoginButton from './LoginButton';
@@ -9,7 +11,7 @@ import InputLogin from './InputLogin';
 import LoginSwitcher from './LoginSwitcher';
 import AddButton from './AddButton';
 
-function Login({theme}) {
+function Login({theme, history}) {
     const themeColors = theme === CONSTANTS.dark ?
         CONSTANTS.colors.dark :
         CONSTANTS.colors.light;
@@ -17,6 +19,7 @@ function Login({theme}) {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [passConf, setPassConf] = useState('');
+    const [error, setError] = useState('');
     const [formType, setFormType] = useState('login');
     function setModeLogin() {
         setFormType('login');
@@ -35,14 +38,46 @@ function Login({theme}) {
     }
 
     function submit() {
-        switch(formType) {
-            case 'login':
-                break;
-            case 'register':
-                break;
-            default:
-                console.log('Error: invalid form type detected.');
-                return;
+        // validation
+        let errStr = '';
+
+        if(!email) {
+            errStr = (errStr ? errStr + '\n' : '') + 'Email is required.';
+        }
+        if(!pass) {
+            errStr = (errStr ? errStr + '\n' : '') + 'Password is required.';
+        }
+
+        if(formType === 'register') {
+            if(!passConf) {
+                errStr = (errStr ? errStr + '\n' : '') + 'Password confirmation is required.';
+            }
+            if(pass !== passConf) {
+                errStr = (errStr ? errStr + '\n' : '') + 'Password and password confirmation must match!';
+            }
+        }
+
+        if(errStr) {
+            setError(errStr);
+            return;
+        }
+
+        setError('');
+        
+        // Auth stuff uses Promise architecture
+        if(formType === 'register') {
+            Auth.signUp({
+                username: email,
+                password: pass,
+                attributes: {
+                    email: email
+                }
+            }).then(result => {
+                console.log('Got success result:\n' + JSON.stringify(result));
+                history.push('/');
+            }).catch(caught => {
+                setError(caught);
+            });
         }
     }
 
@@ -100,6 +135,10 @@ function Login({theme}) {
                         valueModifier={handlePassConfChange} />{' '}
                 </div>
             }
+            {
+                error ? <div><div style={errorStyle}>{error.message ? error.message : error}</div></div>
+                : null
+            }
             <AddButton style={{margin: '.5rem 0 0 0'}} theme={theme} onClick={submit}>
                 Submit
             </AddButton>
@@ -131,5 +170,18 @@ const loginInputDivStyle = {
     margin: '0 0 1rem 0',
     position: 'relative'
 };
+const errorStyle = {
+    backgroundColor: 'palevioletred',
+    borderStyle: 'solid',
+    borderColor: 'red',
+    borderRadius: '.3rem',
+    color: 'black',
+    display: 'inline-block',
+    fontSize: '1rem',
+    fontWeight: '600',
+    margin: '.5rem',
+    padding: '.3rem .6rem',
+    whiteSpace: 'pre-wrap'
+}
 
 export default Login;
