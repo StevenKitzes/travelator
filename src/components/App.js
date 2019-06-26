@@ -1,5 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+
+import { Auth } from 'aws-amplify';
 
 import Header from './Header';
 import Body from './Body';
@@ -15,6 +17,20 @@ function App() {
   const authProps = {
     authenticated, setAuthenticated, user, setUser
   }
+
+  // auth session management
+  useEffect(() => {
+    Promise.all([
+      Auth.currentSession(),
+      Auth.currentAuthenticatedUser()])
+    .then(([session, user]) => {
+      setUser(user);
+      setAuthenticated(true);
+    })
+    .catch((caught) => {
+      console.log(caught);
+    });
+  }, []);
 
   return (
     <div style={appStyles}>

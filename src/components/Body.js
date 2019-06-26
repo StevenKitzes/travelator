@@ -267,23 +267,24 @@ function Body({theme, itinerary, setItinerary, authProps}) {
 
     return (
         <div style={getBodyStyle(themeColors)}>
-            <input
-                id='upload-button'
-                style={getUploadButtonStyle(theme)}
-                type='file'
-                onChange={handleUpload} />
-            <AddButton id='download-button' stretch theme={theme} onClick={downloadItinerary}>
-                Download Itinerary as Text
-            </AddButton>
-            <AddButton stretch theme={theme} onClick={uploadItinerary}>
-                Upload Itinerary from Text
-            </AddButton>
+            <div style={{marginTop: '1rem'}}>
+                <input
+                    id='upload-button'
+                    style={getUploadButtonStyle(theme)}
+                    type='file'
+                    onChange={handleUpload} />
+                <AddButton id='download-button' stretch theme={theme} onClick={downloadItinerary}>
+                    Download Itinerary as Text
+                </AddButton>
+                <AddButton stretch theme={theme} onClick={uploadItinerary}>
+                    Upload Itinerary from Text
+                </AddButton>
+            </div>
             {
                 authProps.authenticated ?
                 <LoginButton theme={theme} onClick={handleLogOut}>
                     Logout
-                </LoginButton>
-                :
+                </LoginButton> :
                 <Link to='/login/'>
                     <LoginButton theme={theme}>
                         Login / Register

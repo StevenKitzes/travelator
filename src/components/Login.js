@@ -68,10 +68,7 @@ function Login({theme, authProps, history}) {
         if(formType === 'register') {
             Auth.signUp({
                 username: email,
-                password: pass,
-                attributes: {
-                    email: email
-                }
+                password: pass
             })
             .then(result => {
                 console.log('Got success result:\n' + JSON.stringify(result));
@@ -102,7 +99,7 @@ function Login({theme, authProps, history}) {
                     Nevermind
                 </LoginButton>
             </Link>
-            <h6>{authProps.user.username} is already logged in!</h6>
+            <h6 style={{marginTop: '1rem'}}><span style={{fontWeight: '600'}}>{authProps.user.attributes.email}</span> is already logged in!</h6>
         </div> :
         <div style={getLoginStyle(themeColors)}>
             <Link to='/'>
