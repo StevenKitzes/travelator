@@ -7,8 +7,14 @@ import Login from './Login';
 import Footer from './Footer';
 
 function App() {
-  let [theme, setTheme] = useState('light');
-  let [itinerary, setItinerary] = useState([]);
+  const [theme, setTheme] = useState('light');
+  const [itinerary, setItinerary] = useState([]);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const authProps = {
+    authenticated, setAuthenticated, user, setUser
+  }
 
   return (
     <div style={appStyles}>
@@ -16,12 +22,20 @@ function App() {
       <Router>
         <Route exact path='/' render={
           (routeProps) => { return (
-            <Body {...routeProps} theme={theme} itinerary={itinerary} setItinerary={setItinerary} />
+            <Body
+              {...routeProps}
+              theme={theme}
+              itinerary={itinerary}
+              setItinerary={setItinerary}
+              authProps={authProps} />
           ); }
         } />
         <Route exact path='/login/' render={
           (routeProps) => { return (
-            <Login {...routeProps} theme={theme} />
+            <Login
+              {...routeProps}
+              theme={theme}
+              authProps={authProps} />
           ); }
         } />
       </Router>

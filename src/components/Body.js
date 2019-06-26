@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { Auth } from 'aws-amplify';
+
 import CONSTANTS from './../constants';
 import Factory from '../factory';
 import ItineraryHelper from '../itinerary-helper';
@@ -13,7 +15,7 @@ import ItemLodging from './ItemLodging';
 import ItemActivity from './ItemActivity';
 import ItemFood from './ItemFood';
 
-function Body({theme, itinerary, setItinerary}) {
+function Body({theme, itinerary, setItinerary, authProps}) {
     
     const themeColors = theme === CONSTANTS.dark ?
         CONSTANTS.colors.dark :
@@ -254,6 +256,15 @@ function Body({theme, itinerary, setItinerary}) {
         };
     }
 
+    function handleLogOut() {
+        Auth.signOut()
+        .then(() => {
+            authProps.setAuthenticated(false);
+            authProps.setUser(null);
+        })
+        .catch(caught => console.log(caught));
+    }
+
     return (
         <div style={getBodyStyle(themeColors)}>
             <input
@@ -267,9 +278,18 @@ function Body({theme, itinerary, setItinerary}) {
             <AddButton stretch theme={theme} onClick={uploadItinerary}>
                 Upload Itinerary from Text
             </AddButton>
-            <Link to='/login/'>
-                <LoginButton theme={theme} phrase='Login / Register' />
-            </Link>
+            {
+                authProps.authenticated ?
+                <LoginButton theme={theme} onClick={handleLogOut}>
+                    Logout
+                </LoginButton>
+                :
+                <Link to='/login/'>
+                    <LoginButton theme={theme}>
+                        Login / Register
+                    </LoginButton>
+                </Link>
+            }
             {itinerary.length > 0 ? null : <h6>Add itinerary items to see them here.</h6>}
             {itinerary.map((item) => {
                 switch(item.type) {

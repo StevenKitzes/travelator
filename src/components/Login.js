@@ -11,7 +11,7 @@ import InputLogin from './InputLogin';
 import LoginSwitcher from './LoginSwitcher';
 import AddButton from './AddButton';
 
-function Login({theme, history}) {
+function Login({theme, authProps, history}) {
     const themeColors = theme === CONSTANTS.dark ?
         CONSTANTS.colors.dark :
         CONSTANTS.colors.light;
@@ -72,19 +72,43 @@ function Login({theme, history}) {
                 attributes: {
                     email: email
                 }
-            }).then(result => {
+            })
+            .then(result => {
                 console.log('Got success result:\n' + JSON.stringify(result));
                 history.push('/');
-            }).catch(caught => {
+            })
+            .catch(caught => {
+                setError(caught);
+            });
+        }
+        if(formType === 'login') {
+            Auth.signIn(email, pass)
+            .then(user => {
+                authProps.setUser(user);
+                authProps.setAuthenticated(true);
+                history.push('/');
+            })
+            .catch(caught => {
                 setError(caught);
             });
         }
     }
 
     return (
+        authProps.authenticated ?
         <div style={getLoginStyle(themeColors)}>
             <Link to='/'>
-                <LoginButton theme={theme} phrase='Nevermind' />
+                <LoginButton theme={theme}>
+                    Nevermind
+                </LoginButton>
+            </Link>
+            <h6>{authProps.user.username} is already logged in!</h6>
+        </div> :
+        <div style={getLoginStyle(themeColors)}>
+            <Link to='/'>
+                <LoginButton theme={theme}>
+                    Nevermind
+                </LoginButton>
             </Link>
 
             <LoginSwitcher
@@ -139,7 +163,7 @@ function Login({theme, history}) {
                 error ? <div><div style={errorStyle}>{error.message ? error.message : error}</div></div>
                 : null
             }
-            <AddButton style={{margin: '.5rem 0 0 0'}} theme={theme} onClick={submit}>
+            <AddButton style={{margin: '.5rem 0 1rem 0'}} theme={theme} onClick={submit}>
                 Submit
             </AddButton>
         </div>
