@@ -16,6 +16,13 @@ code {
     monospace;
 }
 
+.top-gap {
+  margin: 1rem 0 0 0;
+}
+.top-gap-half {
+  margin: .5rem 0 0 0;
+}
+
 .input-light {
   background-color: white;
   color: black;
@@ -34,4 +41,25 @@ code {
   position: absolute;
   top: 0;
   width: 15rem;
+}
+
+.tiny-text {
+  font-size: .7rem;
+  margin-bottom: .5rem;
+  padding: 0
+}
+button.black-link-button {
+  background-color: inherit;
+  border: none;
+  color: black;
+  text-decoration: underline;
+}
+button.white-link-button {
+  background-color: inherit;
+  border: none;
+  color: white;
+  text-decoration: underline;
+}
+button.black-link-button:hover, button.white-link-button:hover {
+  color: darkcyan;
 }

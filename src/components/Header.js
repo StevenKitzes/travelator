@@ -2,7 +2,7 @@ import React from 'react';
 
 import CONSTANTS from './../constants';
 
-function Header({theme, setTheme}) {
+function Header({theme, setTheme, authProps}) {
 
     const themeColors = theme === CONSTANTS.dark ?
         CONSTANTS.colors.dark :
@@ -22,6 +22,7 @@ function Header({theme, setTheme}) {
                     CONSTANTS.images.light.header}
             />
             <span style={getTitleStyle(themeColors)}>Travelator</span>
+            {authProps.authenticated && <span style={getUserStyle(themeColors)}>{authProps.user.attributes.email}</span>}
             <button style={getThemeButtonStyle(themeColors)} onClick={toggleTheme}>Switch theme</button>
         </div>
     );
@@ -61,6 +62,18 @@ function getTitleStyle(theme) {
         fontSize: '2rem',
         fontWeight: '900',
         left: '.7rem',
+        padding: '.2rem .5rem',
+        position: 'absolute'
+    };
+}
+function getUserStyle(theme) {
+    return {
+        backgroundColor: theme.titleBg,
+        bottom: '.7rem',
+        color: theme.titleText,
+        fontSize: '.75rem',
+        fontWeight: '900',
+        right: '.7rem',
         padding: '.2rem .5rem',
         position: 'absolute'
     };

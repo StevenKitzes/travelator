@@ -8,10 +8,9 @@ import CONSTANTS from '../constants';
 import LoginButton from './LoginButton';
 import InputHeader from './InputHeader';
 import InputLogin from './InputLogin';
-import LoginSwitcher from './LoginSwitcher';
 import AddButton from './AddButton';
 
-function Login({theme, authProps, history}) {
+function PasswordReset({theme, authProps, history}) {
     const themeColors = theme === CONSTANTS.dark ?
         CONSTANTS.colors.dark :
         CONSTANTS.colors.light;
@@ -19,14 +18,8 @@ function Login({theme, authProps, history}) {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [passConf, setPassConf] = useState('');
+    const [code, setCode] = useState('');
     const [error, setError] = useState('');
-    const [formType, setFormType] = useState('login');
-    function setModeLogin() {
-        setFormType('login');
-    }
-    function setModeRegister() {
-        setFormType('register');
-    }
     function handleEmailChange(newEmail) {
         setEmail(newEmail);
     }
@@ -36,13 +29,16 @@ function Login({theme, authProps, history}) {
     function handlePassConfChange(newPassConf) {
         setPassConf(newPassConf);
     }
+    function handleCodeChange(newCode) {
+        setCode(newCode);
+    }
 
     function handleKeyPress(event) {
         if(event.key === 'Enter') {
             submit();
         }
     }
-
+    
     function submit() {
         // validation
         let errStr = '';
@@ -53,14 +49,15 @@ function Login({theme, authProps, history}) {
         if(!pass) {
             errStr = (errStr ? errStr + '\n' : '') + 'Password is required.';
         }
+        if(!passConf) {
+            errStr = (errStr ? errStr + '\n' : '') + 'Password confirmation is required.';
+        }
+        if(!code) {
+            errStr = (errStr ? errStr + '\n' : '') + 'Code is required.';
+        }
 
-        if(formType === 'register') {
-            if(!passConf) {
-                errStr = (errStr ? errStr + '\n' : '') + 'Password confirmation is required.';
-            }
-            if(pass !== passConf) {
-                errStr = (errStr ? errStr + '\n' : '') + 'Password and password confirmation must match!';
-            }
+        if(pass !== passConf) {
+            errStr = (errStr ? errStr + '\n' : '') + 'Password and password confirmation must match!';
         }
 
         if(errStr) {
@@ -71,43 +68,13 @@ function Login({theme, authProps, history}) {
         setError('');
         
         // Auth stuff uses Promise architecture
-        if(formType === 'register') {
-            Auth.signUp({
-                username: email,
-                password: pass
-            })
-            .then(() => {
-                history.push('/');
-            })
-            .catch(caught => {
-                setError(caught);
-            });
-        }
-        if(formType === 'login') {
-            Auth.signIn(email, pass)
-            .then(user => {
-                authProps.setUser(user);
-                authProps.setAuthenticated(true);
-                history.push('/');
-            })
-            .catch(caught => {
-                setError(caught);
-            });
-        }
-    }
-    function forgotSubmit() {
-        if(!email) {
-            setError('Error: enter a valid email address to receive a password reset verification code!');
-            return;
-        }
-        setError('');
-        Auth.forgotPassword(email)
-            .then(() => {
-                history.push('/password-reset/');
-            })
-            .catch(caught => {
-                setError(caught);
-            });
+        Auth.forgotPasswordSubmit(email, code, pass)
+        .then(() => {
+            history.push('/password-reset-complete/');
+        })
+        .catch(caught => {
+            setError(caught);
+        });
     }
 
     return (
@@ -128,18 +95,9 @@ function Login({theme, authProps, history}) {
                 </LoginButton>
             </Link>
 
-            <LoginSwitcher
-                theme={theme}
-                callback={setModeLogin}
-                phrase='Login'
-                active={formType === 'login'} />
-            <LoginSwitcher
-                theme={theme}
-                callback={setModeRegister}
-                phrase='Register'
-                active={formType === 'register'} />
+            <h3 className='top-gap'>Password reset</h3>
 
-            <div className='tiny-text'>All fields required</div>
+            <div className='tiny-text top-gap-half'>All fields required; check your email for the required verification code!</div>
 
             <div style={loginInputDivStyle}>
                 <InputHeader id='email-header' theme={theme}>
@@ -164,31 +122,29 @@ function Login({theme, authProps, history}) {
                     keyHandler={handleKeyPress}
                     valueModifier={handlePassChange} />{' '}
             </div>
-            {
-                formType === 'login' ?
-                <div className='tiny-text'>
-                    <button 
-                        className={theme === CONSTANTS.dark ?
-                            'white-link-button' :
-                            'black-link-button'}
-                        onClick={forgotSubmit}>
-                        Password reset?
-                    </button>
-                </div>
-                :
-                <div style={loginInputDivStyle}>
-                    <InputHeader id='password-confirm-header' theme={theme}>
-                        Confirm
-                    </InputHeader>
-                    <InputLogin
-                        password
-                        theme={theme}
-                        placeholder='Confirm password'
-                        value={passConf}
-                        keyHandler={handleKeyPress}
-                        valueModifier={handlePassConfChange} />{' '}
-                </div>
-            }
+            <div style={loginInputDivStyle}>
+                <InputHeader id='password-confirm-header' theme={theme}>
+                    Confirm
+                </InputHeader>
+                <InputLogin
+                    password
+                    theme={theme}
+                    placeholder='Confirm password'
+                    value={passConf}
+                    keyHandler={handleKeyPress}
+                    valueModifier={handlePassConfChange} />{' '}
+            </div>
+            <div style={loginInputDivStyle}>
+                <InputHeader id='code-header' theme={theme}>
+                    Code
+                </InputHeader>
+                <InputLogin
+                    theme={theme}
+                    placeholder='Verification code'
+                    value={code}
+                    keyHandler={handleKeyPress}
+                    valueModifier={handleCodeChange} />{' '}
+            </div>
             {
                 error ? <div><div style={errorStyle}>{error.message ? error.message : error}</div></div>
                 : null
@@ -233,4 +189,4 @@ const errorStyle = {
     whiteSpace: 'pre-wrap'
 }
 
-export default Login;
+export default PasswordReset;

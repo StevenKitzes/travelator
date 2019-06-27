@@ -267,7 +267,7 @@ function Body({theme, itinerary, setItinerary, authProps}) {
 
     return (
         <div style={getBodyStyle(themeColors)}>
-            <div style={{marginTop: '1rem'}}>
+            <div className='top-gap'>
                 <input
                     id='upload-button'
                     style={getUploadButtonStyle(theme)}

@@ -6,6 +6,8 @@ import { Auth } from 'aws-amplify';
 import Header from './Header';
 import Body from './Body';
 import Login from './Login';
+import PasswordReset from './PasswordReset';
+import PasswordResetComplete from './PasswordResetComplete';
 import Footer from './Footer';
 
 function App() {
@@ -34,7 +36,10 @@ function App() {
 
   return (
     <div style={appStyles}>
-      <Header theme={theme} setTheme={setTheme} />
+      <Header
+        theme={theme}
+        setTheme={setTheme}
+        authProps={authProps} />
       <Router>
         <Route exact path='/' render={
           (routeProps) => { return (
@@ -49,6 +54,22 @@ function App() {
         <Route exact path='/login/' render={
           (routeProps) => { return (
             <Login
+              {...routeProps}
+              theme={theme}
+              authProps={authProps} />
+          ); }
+        } />
+        <Route exact path='/password-reset/' render={
+          (routeProps) => { return (
+            <PasswordReset
+              {...routeProps}
+              theme={theme}
+              authProps={authProps} />
+          ); }
+        } />
+        <Route exact path='/password-reset-complete/' render={
+          (routeProps) => { return (
+            <PasswordResetComplete
               {...routeProps}
               theme={theme}
               authProps={authProps} />

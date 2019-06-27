@@ -2,9 +2,12 @@ import React from 'react';
 
 import CONSTANTS from '../constants';
 
-function InputLogin({placeholder, value, valueModifier, theme, password}) {
+function InputLogin({placeholder, value, valueModifier, theme, password, keyHandler}) {
     function handleChange(event) {
         valueModifier(event.target.value);
+    }
+    function handleKeyPress(event) {
+        keyHandler(event);
     }
     return (
         <input
@@ -14,6 +17,7 @@ function InputLogin({placeholder, value, valueModifier, theme, password}) {
                 'login-input input-light'}
             value={value}
             onChange={handleChange}
+            onKeyPress={handleKeyPress}
             placeholder={placeholder} />
     );
 }
