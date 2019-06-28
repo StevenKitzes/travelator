@@ -1,1 +1,1 @@
-// main API server file
+// main API server file for travelator itinerary planning app
