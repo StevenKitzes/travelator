@@ -23,20 +23,24 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
     // internal handlers
     function handleDepartureChange(date) {
         item.date = date;
-        ItineraryHelper.sortItineraryByDate(itinerary);
+        handleDepartureBlur();
         setItinerary(Array.from(itinerary));
     }
     function handleArrivalChange(date) {
         item.typeDetails.secondaryDate = date;
+        handleArrivalBlur();
         setItinerary(Array.from(itinerary));
     }
     function handleDepartureBlur() {
+        console.log('depart, arrive: ' + item.date.toString() + ', ' + item.typeDetails.secondaryDate.toString());
         if(item.typeDetails.secondaryDate < item.date) {
             item.typeDetails.secondaryDate = new Date(item.date);
+            ItineraryHelper.sortItineraryByDate(itinerary);
             setItinerary(Array.from(itinerary));
         }
     }
     function handleArrivalBlur() {
+        console.log('depart, arrive: ' + item.date.toString() + ', ' + item.typeDetails.secondaryDate.toString());
         if(item.typeDetails.secondaryDate < item.date) {
             item.date = new Date(item.typeDetails.secondaryDate);
             ItineraryHelper.sortItineraryByDate(itinerary);

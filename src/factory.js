@@ -31,7 +31,7 @@ Factory.detailed = function(
     switch(type) {
         case CONSTANTS.travelType: {
             if(!secondaryDate) {
-                secondaryDate = new Date();
+                secondaryDate = new Date(date);
                 secondaryDate.setMinutes(0);
                 secondaryDate.setSeconds(0);
                 secondaryDate.setMilliseconds(0);
@@ -45,7 +45,7 @@ Factory.detailed = function(
         }
         case CONSTANTS.lodgingType: {
             if(!secondaryDate) {
-                secondaryDate = new Date();
+                secondaryDate = new Date(date);
                 secondaryDate.setMinutes(0);
                 secondaryDate.setSeconds(0);
                 secondaryDate.setMilliseconds(0);

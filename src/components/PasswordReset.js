@@ -38,7 +38,7 @@ function PasswordReset({theme, authProps, history}) {
             submit();
         }
     }
-    
+
     function submit() {
         // validation
         let errStr = '';
@@ -97,6 +97,8 @@ function PasswordReset({theme, authProps, history}) {
 
             <h3 className='top-gap'>Password reset</h3>
 
+            <h6 className='top-gap-half'>Check your email for a Travelator verification code.</h6>
+
             <div className='tiny-text top-gap-half'>All fields required; check your email for the required verification code!</div>
 
             <div style={loginInputDivStyle}>
@@ -117,7 +119,7 @@ function PasswordReset({theme, authProps, history}) {
                 <InputLogin
                     password
                     theme={theme}
-                    placeholder='Password'
+                    placeholder='New password'
                     value={pass}
                     keyHandler={handleKeyPress}
                     valueModifier={handlePassChange} />{' '}
