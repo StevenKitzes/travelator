@@ -336,7 +336,14 @@ function Body({theme, itinerary, setItinerary, authProps}) {
                         );
                 }
             })}
-            {itinerary.length > 0 ? <h6>Itinerary items above.</h6> : null}
+            {
+                itinerary.length > 0
+                    ?
+                    <h6 className='top-gap-half'>
+                        Trip cost: ${(ItineraryHelper.getTotalCost(itinerary)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
+                    </h6>
+                    :
+                    null}
             <AddButton theme={theme} onClick={addTravel}>
                 + Travel
             </AddButton>

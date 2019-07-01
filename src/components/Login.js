@@ -86,6 +86,7 @@ function Login({theme, authProps, history}) {
         if(formType === 'login') {
             Auth.signIn(email, pass)
             .then(user => {
+                console.log(user);
                 authProps.setUser(user);
                 authProps.setAuthenticated(true);
                 history.push('/');

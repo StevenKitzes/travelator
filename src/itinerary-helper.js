@@ -37,6 +37,14 @@ const helper = {
             return date;
         }
         return itinerary[itinerary.length-1].date;
+    },
+
+    getTotalCost: function(itinerary) {
+        let cost = 0;
+        itinerary.forEach((item) => {
+            cost += parseFloat(item.cost) || 0;
+        });
+        return cost;
     }
     
 };

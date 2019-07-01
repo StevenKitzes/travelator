@@ -3,6 +3,7 @@ import React from 'react';
 import CONSTANTS from '../constants';
 
 function Cost({cost, handleCostChange, theme}) {
+
     return (
         <div style={{display: 'inline-block', float: 'right', marginRight: '.25rem'}}>
             $<input
