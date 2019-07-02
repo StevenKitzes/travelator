@@ -4,7 +4,7 @@ import './index.css';
 import App from './components/App';
 
 import Amplify from 'aws-amplify';
-import config from '../config';
+import config from './config';
 
 Amplify.configure({
     Auth: {

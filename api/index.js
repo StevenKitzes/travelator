@@ -6,7 +6,7 @@ const https = require('https');
 const jsonwebtoken = require('jsonwebtoken');
 const jtp = require('jwk-to-pem');
 
-const config = require('../config');
+const config = require('../src/config');
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -16,8 +16,6 @@ app.post('/', (req, res) => {
     const token = req.body.token;
     const tokenDecoded = jsonwebtoken.decode(token, {complete: true});
     const tokenKeyId = tokenDecoded.header.kid;
-    console.log('decoded token:',tokenDecoded);
-    console.log('decoded key id:',tokenKeyId);
 
     // create link to retrieve public key info from cognito
     const pubKeyURL = `https://cognito-idp.${config.cognito.REGION}.amazonaws.com/${config.cognito.USER_POOL_ID}/.well-known/jwks.json`;
@@ -49,13 +47,9 @@ app.post('/', (req, res) => {
                         // if expired
                         const date = Math.floor(Date.now()/1000);
                         if(result.exp < date) {
-                            console.log('jwt expired!');
-                            console.log('expiration:',result.exp);
-                            console.log('current date:',date);
                             res.send('Session expired!');
                             return;
                         }
-                        console.log('user verified');
                         res.send('user verified');
                         return;
                     })
