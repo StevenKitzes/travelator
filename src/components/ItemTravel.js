@@ -24,12 +24,10 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
     function handleDepartureChange(date) {
         item.date = date;
         handleDepartureBlur();
-        setItinerary(Array.from(itinerary));
     }
     function handleArrivalChange(date) {
         item.typeDetails.secondaryDate = date;
         handleArrivalBlur();
-        setItinerary(Array.from(itinerary));
     }
     function handleDepartureBlur() {
         console.log('depart, arrive: ' + item.date.toString() + ', ' + item.typeDetails.secondaryDate.toString());

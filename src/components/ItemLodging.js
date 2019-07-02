@@ -23,16 +23,16 @@ function ItemLodging({itemKey, theme, itinerary, setItinerary}) {
     // internal handlers
     function handleArrivalChange(date) {
         item.date = date;
-        ItineraryHelper.sortItineraryByDate(itinerary);
-        setItinerary(Array.from(itinerary));
+        handleArrivalBlur();
     }
     function handleDepartureChange(date) {
         item.typeDetails.secondaryDate = date;
-        setItinerary(Array.from(itinerary));
+        handleDepartureBlur();
     }
     function handleArrivalBlur() {
         if(item.date > item.typeDetails.secondaryDate) {
             item.typeDetails.secondaryDate = new Date(item.date);
+            ItineraryHelper.sortItineraryByDate(itinerary);
             setItinerary(Array.from(itinerary));
         }
     }

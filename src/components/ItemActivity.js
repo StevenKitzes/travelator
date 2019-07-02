@@ -23,8 +23,7 @@ function ItemActivity({itemKey, theme, itinerary, setItinerary}) {
     // internal handlers
     function handleDateChange(date) {
         item.date = date;
-        ItineraryHelper.sortItineraryByDate(itinerary);
-        setItinerary(Array.from(itinerary));
+        handleDateBlur();
     }
     function handleDateBlur() {
         ItineraryHelper.sortItineraryByDate(itinerary);

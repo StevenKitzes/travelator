@@ -23,7 +23,7 @@ function ItemFood({itemKey, theme, itinerary, setItinerary}) {
     // internal handlers
     function handleDateChange(date) {
         item.date = date;
-        setItinerary(Array.from(itinerary));
+        handleDateBlur();
     }
     function handleDateBlur() {
         ItineraryHelper.sortItineraryByDate(itinerary);
