@@ -265,6 +265,20 @@ function Body({theme, itinerary, setItinerary, authProps}) {
         .catch(caught => console.log(caught));
     }
 
+    function test() {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = () => {
+            testListener(xhr.response);
+        };
+        xhr.open('POST', 'http://localhost:8080/');
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        xhr.send(JSON.stringify({token:authProps.user.signInUserSession.accessToken.jwtToken}));
+    }
+    function testListener(res) {
+        console.log('testListener triggered');
+        document.getElementById('test-result').innerHTML = res;
+    }
+
     return (
         <div style={getBodyStyle(themeColors)}>
             <div className='top-gap'>
@@ -356,6 +370,10 @@ function Body({theme, itinerary, setItinerary, authProps}) {
             <AddButton theme={theme} onClick={addFood}>
                 + Food
             </AddButton>
+            <div>
+                <button onClick={test}>test</button>
+                <div id='test-result'></div>
+            </div>
         </div>
     );
 }
