@@ -12,12 +12,16 @@ import Footer from './Footer';
 
 function App() {
   const [theme, setTheme] = useState('light');
+  const [itineraryName, setItineraryName] = useState('');
   const [itinerary, setItinerary] = useState([]);
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
 
   const authProps = {
     authenticated, setAuthenticated, user, setUser
+  }
+  const itinProps = {
+    itinerary, setItinerary, itineraryName, setItineraryName
   }
 
   // auth session management
@@ -46,8 +50,7 @@ function App() {
             <Body
               {...routeProps}
               theme={theme}
-              itinerary={itinerary}
-              setItinerary={setItinerary}
+              itinProps={itinProps}
               authProps={authProps} />
           ); }
         } />

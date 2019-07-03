@@ -23,12 +23,17 @@ function ItemActivity({itemKey, theme, itinerary, setItinerary}) {
     // internal handlers
     function handleDateChange(date) {
         item.date = date;
-        handleDateBlur();
+        sortAndSetItinerary();
     }
     function handleDateBlur() {
+        sortAndSetItinerary();
+    }
+
+    function sortAndSetItinerary() {
         ItineraryHelper.sortItineraryByDate(itinerary);
         setItinerary(Array.from(itinerary));
     }
+
     function handleCostChange(event) {
         if(isNaN(event.target.value)) {
             return;

@@ -15,8 +15,9 @@ import ItemLodging from './ItemLodging';
 import ItemActivity from './ItemActivity';
 import ItemFood from './ItemFood';
 
-function Body({theme, itinerary, setItinerary, authProps}) {
-    
+function Body({theme, itinProps, authProps}) {
+    const itinerary = itinProps.itinerary;
+    const setItinerary = itinProps.setItinerary;
     const themeColors = theme === CONSTANTS.dark ?
         CONSTANTS.colors.dark :
         CONSTANTS.colors.light;
@@ -53,7 +54,7 @@ function Body({theme, itinerary, setItinerary, authProps}) {
         }
 
         // output array for all properties of all itinerary items
-        const output = [CONSTANTS.fileHeader];
+        const output = [CONSTANTS.fileHeader, itinProps.itineraryName];
 
         // for each itinerary item
         for(let i = 0; i < itinerary.length; i++) {
@@ -122,8 +123,11 @@ function Body({theme, itinerary, setItinerary, authProps}) {
                 }
 
                 // file read and itin hydration setup
-                let line = 0;
+                let line = 1;
                 const newItinerary = [];
+
+                // get itinerary name
+                const uploadName = input[line];
 
                 // as long as we have more lines to read
                 while(++line < input.length) {
@@ -249,6 +253,7 @@ function Body({theme, itinerary, setItinerary, authProps}) {
                             throw new Error(CONSTANTS.badFileContent + ' (unrecognized itinerary item type: ' + input[line] + ' at input line ' + line + ')');
                     }
                 }
+                itinProps.setItineraryName(uploadName);
                 setItinerary(Array.from(newItinerary));
             } catch(err) {
                 console.log(err);
@@ -263,6 +268,10 @@ function Body({theme, itinerary, setItinerary, authProps}) {
             authProps.setUser(null);
         })
         .catch(caught => console.log(caught));
+    }
+
+    function handleNameChange(event) {
+        itinProps.setItineraryName(event.target.value);
     }
 
     function test() {
@@ -295,6 +304,19 @@ function Body({theme, itinerary, setItinerary, authProps}) {
                 </AddButton>
             </div>
             {
+                itinerary.length > 0 ?
+                <div className='top-gap-half bottom-gap-half'>
+                    Name your itinerary (optional):{' '}
+                    <input
+                        style={itineraryNameStyle}
+                        type='text'
+                        onChange={handleNameChange}
+                        value={itinProps.itineraryName}
+                        placeholder='Itinerary name' />
+                </div> :
+                null
+            }
+            {
                 authProps.authenticated ?
                 <LoginButton theme={theme} onClick={handleLogOut}>
                     Logout
@@ -305,7 +327,7 @@ function Body({theme, itinerary, setItinerary, authProps}) {
                     </LoginButton>
                 </Link>
             }
-            {itinerary.length > 0 ? null : <h6>Add itinerary items to see them here.</h6>}
+            {itinerary.length > 0 ? null : <h6 className='top-gap-half'>Add itinerary items to see them here.</h6>}
             {itinerary.map((item) => {
                 switch(item.type) {
                     case CONSTANTS.travelType:
@@ -351,13 +373,12 @@ function Body({theme, itinerary, setItinerary, authProps}) {
                 }
             })}
             {
-                itinerary.length > 0
-                    ?
-                    <h6 className='top-gap-half'>
-                        Trip cost: ${(ItineraryHelper.getTotalCost(itinerary)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
-                    </h6>
-                    :
-                    null}
+                itinerary.length > 0 ?
+                <h6 className='top-gap-half'>
+                    Trip cost: ${(ItineraryHelper.getTotalCost(itinerary)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
+                </h6> :
+                null
+            }
             <AddButton theme={theme} onClick={addTravel}>
                 + Travel
             </AddButton>
@@ -378,6 +399,9 @@ function Body({theme, itinerary, setItinerary, authProps}) {
     );
 }
 
+const itineraryNameStyle = {
+    borderRadius: '.3rem'
+}
 function getBodyStyle(colors) {
     return {
         backgroundColor: colors.bg,

@@ -16,11 +16,18 @@ code {
     monospace;
 }
 
+input {
+  border-radius: .25rem;
+}
+
 .top-gap {
-  margin: 1rem 0 0 0;
+  margin-top: 1rem;
 }
 .top-gap-half {
-  margin: .5rem 0 0 0;
+  margin-top: .5rem;
+}
+.bottom-gap-half {
+  margin-bottom: .5rem;
 }
 
 .input-light {

@@ -23,26 +23,37 @@ function ItemLodging({itemKey, theme, itinerary, setItinerary}) {
     // internal handlers
     function handleArrivalChange(date) {
         item.date = date;
-        handleArrivalBlur();
+        checkArrivalExceedsDeparture();
     }
     function handleDepartureChange(date) {
         item.typeDetails.secondaryDate = date;
-        handleDepartureBlur();
+        checkDeparturePrecedesArrival();
     }
     function handleArrivalBlur() {
-        if(item.date > item.typeDetails.secondaryDate) {
-            item.typeDetails.secondaryDate = new Date(item.date);
-            ItineraryHelper.sortItineraryByDate(itinerary);
-            setItinerary(Array.from(itinerary));
-        }
+        checkArrivalExceedsDeparture();
     }
     function handleDepartureBlur() {
-        if(item.date > item.typeDetails.secondaryDate) {
-            item.date = new Date(item.typeDetails.secondaryDate);
-            ItineraryHelper.sortItineraryByDate(itinerary);
-            setItinerary(Array.from(itinerary));
-        }
+        checkDeparturePrecedesArrival();
     }
+
+    function checkArrivalExceedsDeparture() {
+        if(item.typeDetails.secondaryDate < item.date) {
+            item.typeDetails.secondaryDate = new Date(item.date);
+        }
+        sortAndSetItinerary();
+    }
+    function checkDeparturePrecedesArrival() {
+        if(item.typeDetails.secondaryDate < item.date) {
+            item.date = new Date(item.typeDetails.secondaryDate);
+        }
+        sortAndSetItinerary();
+    }
+
+    function sortAndSetItinerary() {
+        ItineraryHelper.sortItineraryByDate(itinerary);
+        setItinerary(Array.from(itinerary));
+    }
+    
     function handleCostChange(event) {
         if(isNaN(event.target.value)) {
             return;

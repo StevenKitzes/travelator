@@ -23,28 +23,38 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
     // internal handlers
     function handleDepartureChange(date) {
         item.date = date;
-        handleDepartureBlur();
+        checkDepartureExceedsArrival();
     }
     function handleArrivalChange(date) {
         item.typeDetails.secondaryDate = date;
-        handleArrivalBlur();
+        checkArrivalPrecedesDeparture();
     }
+
     function handleDepartureBlur() {
-        console.log('depart, arrive: ' + item.date.toString() + ', ' + item.typeDetails.secondaryDate.toString());
-        if(item.typeDetails.secondaryDate < item.date) {
-            item.typeDetails.secondaryDate = new Date(item.date);
-            ItineraryHelper.sortItineraryByDate(itinerary);
-            setItinerary(Array.from(itinerary));
-        }
+        checkDepartureExceedsArrival();
     }
     function handleArrivalBlur() {
-        console.log('depart, arrive: ' + item.date.toString() + ', ' + item.typeDetails.secondaryDate.toString());
+        checkArrivalPrecedesDeparture();
+    }
+
+    function checkDepartureExceedsArrival() {
+        if(item.typeDetails.secondaryDate < item.date) {
+            item.typeDetails.secondaryDate = new Date(item.date);
+        }
+        sortAndSetItinerary();
+    }
+    function checkArrivalPrecedesDeparture() {
         if(item.typeDetails.secondaryDate < item.date) {
             item.date = new Date(item.typeDetails.secondaryDate);
-            ItineraryHelper.sortItineraryByDate(itinerary);
-            setItinerary(Array.from(itinerary));
         }
+        sortAndSetItinerary();
     }
+
+    function sortAndSetItinerary() {
+        ItineraryHelper.sortItineraryByDate(itinerary);
+        setItinerary(Array.from(itinerary));
+    }
+
     function handleCostChange(event) {
         if(isNaN(event.target.value)) {
             return;
