@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.post('/', (req, res) => {
-    // receive jwt token from user request
+    // receive jwt token from incoming client side request
     const token = req.body.token;
     const tokenDecoded = jsonwebtoken.decode(token, {complete: true});
     const tokenKeyId = tokenDecoded.header.kid;
@@ -41,16 +41,18 @@ app.post('/', (req, res) => {
                     jsonwebtoken.verify(token,pem,{algorithms:['RS256']},(err, result) => {
                         if(err) {
                             console.log('ERROR: verifying jwt:',err);
-                            res.send(err);
+                            res.send({err});
                             return;
                         }
                         // if expired
                         const date = Math.floor(Date.now()/1000);
                         if(result.exp < date) {
-                            res.send('Session expired!');
+                            res.send({message:'Session expired!'});
+                            console.log('Session expired!');
                             return;
                         }
-                        res.send('user verified');
+                        res.send({message:'user verified'});
+                        console.log('user verified');
                         return;
                     })
                 }

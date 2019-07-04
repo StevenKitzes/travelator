@@ -275,17 +275,35 @@ function Body({theme, itinProps, authProps}) {
     }
 
     function test() {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = () => {
-            testListener(xhr.response);
-        };
-        xhr.open('POST', 'http://localhost:8080/');
-        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        xhr.send(JSON.stringify({token:authProps.user.signInUserSession.accessToken.jwtToken}));
+        if(!authProps.user) {
+            testErr('No user logged in, cannot authenticate');
+            return;
+        }
+        const request = new Request('http://localhost:8080', {
+            method: 'post',
+            headers: {
+                "Content-Type": 'application/json;charset=UTF-8'
+            },
+            body: JSON.stringify({token:authProps.user.signInUserSession.accessToken.jwtToken})
+        });
+        fetch(request)
+            .then((res) => {
+                return res.json();
+            }).then((resJSON) => {
+                testListener(resJSON);
+            }).catch((err) => {
+                console.log('got error from fetch request');
+                testErr(err);
+            })
     }
     function testListener(res) {
         console.log('testListener triggered');
-        document.getElementById('test-result').innerHTML = res;
+        console.log('res',res);
+        document.getElementById('test-result').innerHTML = res.message;
+    }
+    function testErr(err) {
+        console.log('testErr triggered');
+        document.getElementById('test-result').innerHTML = err;
     }
 
     return (
