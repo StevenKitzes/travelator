@@ -6,6 +6,13 @@ const constants = {
     badFileSeparator: 'Error: unrecognized file format.',
     badFileContent: 'Error: unrecognized content formatting.',
 
+    feedback: {
+        none: 'none',
+        success: 'success',
+        failure: 'failure',
+        warning: 'warning'
+    },
+
     headerHeight: '15rem',
 
     colors: {

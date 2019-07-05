@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 
 import { Auth } from 'aws-amplify';
@@ -15,6 +15,7 @@ import ItemTravel from './ItemTravel';
 import ItemLodging from './ItemLodging';
 import ItemActivity from './ItemActivity';
 import ItemFood from './ItemFood';
+import ActionButton from './ActionButton';
 
 function Body({theme, itinProps, authProps}) {
     const itinerary = itinProps.itinerary;
@@ -22,6 +23,9 @@ function Body({theme, itinProps, authProps}) {
     const themeColors = theme === CONSTANTS.dark ?
         CONSTANTS.colors.dark :
         CONSTANTS.colors.light;
+    
+    const [feedbackType, setFeedbackType] = useState(CONSTANTS.feedback.none);
+    const [feedback, setFeedback] = useState('');
 
     function addTravel() {
         const travelItem = Factory.simple(CONSTANTS.travelType, ItineraryHelper.getLatestDate(itinerary));
@@ -275,9 +279,15 @@ function Body({theme, itinProps, authProps}) {
         itinProps.setItineraryName(event.target.value);
     }
 
+    function handleFeedbackClick() {
+        setFeedback('');
+        setFeedbackType(CONSTANTS.feedback.none);
+    }
+
     function test() {
         if(!authProps.user) {
-            testErr('No user logged in, cannot authenticate');
+            setFeedback('No one is logged in, so cannot authenticate');
+            setFeedbackType(CONSTANTS.feedback.failure);
             return;
         }
         const options = {
@@ -287,42 +297,62 @@ function Body({theme, itinProps, authProps}) {
             },
             body: JSON.stringify({token:authProps.user.signInUserSession.accessToken.jwtToken})
         };
-        fetchWithTimeout('http://localhost:8080', options, 3000)
+        fetchWithTimeout('http://localhost:8080/test-user-auth/', options, 3000)
             .then((res) => {
                 return res.json();
             }).then((resJSON) => {
-                testListener(resJSON);
+                setFeedback(resJSON.message);
+                setFeedbackType(CONSTANTS.feedback.success);
             }).catch((err) => {
-                console.log('got error from fetch request');
-                testErr(err);
+                setFeedback(err);
+                setFeedbackType(CONSTANTS.feedback.failure);
             })
     }
-    function testListener(res) {
-        console.log('testListener triggered');
-        console.log('res',res);
-        document.getElementById('test-result').innerHTML = res.message;
-    }
-    function testErr(err) {
-        console.log('testErr triggered');
-        document.getElementById('test-result').innerHTML = err;
+
+    function cloudSave() {
+        if(!itinProps.itineraryName) {
+            setFeedback('Itinerary name needed for Cloud storage!');
+            setFeedbackType(CONSTANTS.feedback.failure);
+            return;
+        }
+        setFeedback('If this feature existed, it would have succeeded!');
+        setFeedbackType(CONSTANTS.feedback.success);
+        return;
     }
 
     return (
         <div style={getBodyStyle(themeColors)}>
+            {/** itinerary management buttons */}
             <div className='top-gap'>
                 <input
                     id='upload-button'
-                    style={getUploadButtonStyle(theme)}
+                    style={uploadButtonStyle}
                     type='file'
                     onChange={handleUpload} />
-                <AddButton id='download-button' stretch theme={theme} onClick={downloadItinerary}>
-                    Download Itinerary as Text
-                </AddButton>
-                <AddButton stretch theme={theme} onClick={uploadItinerary}>
-                    Upload Itinerary from Text
+                
+                {   /** cloud save button */
+                    authProps.authenticated && itinerary.length > 0 ?
+                    <AddButton stretch theme={theme} onClick={cloudSave}>
+                        <strong>Save</strong> Itinerary to Account
+                    </AddButton>
+                    : null
+                }
+                {   /** text file download button */
+                    itinerary.length > 0 ?
+                    <AddButton id='download-button' stretch theme={theme} onClick={downloadItinerary}>
+                        <strong>Download</strong> Itinerary as Text
+                    </AddButton>
+                    : null
+                }
+                <AddButton stretch theme={theme} onClick={uploadItinerary} title='This will overwrite the current itinerary!'>
+                    <strong>Upload</strong> Itinerary from Text
                 </AddButton>
             </div>
-            {
+            {/** feedback */}
+            <div style={getFeedbackStyle(feedbackType)} onClick={handleFeedbackClick}>
+                {feedback} <ActionButton src={CONSTANTS.images.iconClose} />
+            </div>
+            {   /** itinerary name input */
                 itinerary.length > 0 ?
                 <div className='top-gap-half bottom-gap-half'>
                     Name your itinerary (optional):{' '}
@@ -335,7 +365,7 @@ function Body({theme, itinProps, authProps}) {
                 </div> :
                 null
             }
-            {
+            {   /** login/logout button */
                 authProps.authenticated ?
                 <LoginButton theme={theme} onClick={handleLogOut}>
                     Logout
@@ -391,7 +421,7 @@ function Body({theme, itinProps, authProps}) {
                         );
                 }
             })}
-            {
+            {   /** summary line */
                 itinerary.length > 0 ?
                 <h6 className='top-gap-half'>
                     Trip cost: ${(ItineraryHelper.getTotalCost(itinerary)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
@@ -412,7 +442,6 @@ function Body({theme, itinProps, authProps}) {
             </AddButton>
             <div>
                 <button onClick={test}>test</button>
-                <div id='test-result'></div>
             </div>
         </div>
     );
@@ -435,10 +464,45 @@ function getBodyStyle(colors) {
         width: '100%'
     }
 }
-function getUploadButtonStyle(theme) {
-    return {
-        display: 'none'
+const uploadButtonStyle = {
+    display: 'none'
+};
+function getFeedbackStyle(feedbackType) {
+    const style = {
+        borderStyle: 'solid',
+        borderRadius: '.3rem',
+        color: 'black',
+        cursor: 'pointer',
+        fontSize: '1rem',
+        fontWeight: '600',
+        margin: '.5rem',
+        padding: '.3rem .6rem'
     };
+    switch(feedbackType) {
+        case CONSTANTS.feedback.success:
+            style.display = 'inline-block';
+            style.backgroundColor = 'lightgreen';
+            style.borderStyle = 'solid';
+            style.borderColor = 'green';
+            break;
+        case CONSTANTS.feedback.warning:
+            style.display = 'inline-block';
+            style.backgroundColor = 'lightyellow';
+            style.borderStyle = 'solid';
+            style.borderColor = 'goldenrod';
+            break;
+        case CONSTANTS.feedback.failure:
+            style.display = 'inline-block';
+            style.backgroundColor = 'lightpink';
+            style.borderStyle = 'solid';
+            style.borderColor = 'red';
+            break;
+        case CONSTANTS.feedback.none:
+        default:
+            style.display = 'none';
+            break;
+    }
+    return style;
 }
 
 export default Body;

@@ -11,7 +11,7 @@ const config = require('../src/config');
 app.use(bodyParser.json());
 app.use(cors());
 
-app.post('/', (req, res) => {
+app.post('/test-user-auth/', (req, res) => {
     const authResult = validateUserAuth(req.body.token);
 
     if(authResult.authenticated === true) {

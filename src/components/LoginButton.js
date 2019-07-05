@@ -9,10 +9,10 @@ const LoginButton = styled.div`
     border-bottom: .15rem solid ${props => props.theme === CONSTANTS.dark ?
         'gray' :
         CONSTANTS.colors.light.heavy};
-    border-left: .15rem solid ${props => props.theme === CONSTANTS.dark ?
+    border-right: .15rem solid ${props => props.theme === CONSTANTS.dark ?
         'gray' :
         CONSTANTS.colors.light.heavy};
-    border-radius: 0 0 0 1rem;
+    border-radius: 0 0 1rem 0;
     color: ${props => props.theme === CONSTANTS.dark ?
         'white' :
         'black'};
@@ -20,10 +20,10 @@ const LoginButton = styled.div`
     display: inline-block;
     font-size: 1rem;
     font-weight: 600;
+    left: 0;
     margin: 0;
-    padding: 0 .5rem .25rem .75rem;
-    position: absolute;
-    right: 0;
+    padding: 0 .75rem .25rem .5rem;
+    position: fixed;
     top: 0;
     z-index: 1;
 `
