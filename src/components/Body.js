@@ -301,6 +301,11 @@ function Body({theme, itinProps, authProps}) {
             .then((res) => {
                 return res.json();
             }).then((resJSON) => {
+                if(resJSON.error) {
+                    setFeedback(resJSON.error);
+                    setFeedbackType(CONSTANTS.feedback.failure);
+                    return;
+                }
                 setFeedback(resJSON.message);
                 setFeedbackType(CONSTANTS.feedback.success);
             }).catch((err) => {
@@ -315,9 +320,34 @@ function Body({theme, itinProps, authProps}) {
             setFeedbackType(CONSTANTS.feedback.failure);
             return;
         }
-        setFeedback('If this feature existed, it would have succeeded!');
-        setFeedbackType(CONSTANTS.feedback.success);
-        return;
+        
+        const options = {
+            method: 'post',
+            headers: {
+                "Content-Type": 'application/json;charset=UTF-8'
+            },
+            body: JSON.stringify({
+                token: authProps.user.signInUserSession.accessToken.jwtToken,
+                username: authProps.user.username,
+                itinProps
+            })
+        };
+        fetchWithTimeout('http://localhost:8080/save-itinerary/', options, 3000)
+            .then((res) => {
+                return res.json();
+            }).then((resJSON) => {
+                if(resJSON.error) {
+                    setFeedback(resJSON.error);
+                    setFeedbackType(CONSTANTS.feedback.failure);
+                    return;
+                }
+                setFeedback(resJSON.message);
+                setFeedbackType(CONSTANTS.feedback.success);
+                return;
+            }).catch((err) => {
+                setFeedback(err);
+                setFeedbackType(CONSTANTS.feedback.failure);
+            })
     }
 
     return (

@@ -28,3 +28,4 @@ yarn-error.log*
 
 # secrets
 config.json
+aws-config.json

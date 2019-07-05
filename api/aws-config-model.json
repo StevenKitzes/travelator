@@ -1,0 +1,7 @@
+{
+    "region": "${region}",
+    "endpoint": "https://dynamodb.${region}.amazonaws.com",
+    "table": "${table-name}",
+    "accessKeyId": "???",
+    "secretAccessKey": "?????"
+}

@@ -1,36 +1,72 @@
 const app = require('express')();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const https = require('https');
 
+const aws = require('aws-sdk');
 const jsonwebtoken = require('jsonwebtoken');
 const jtp = require('jwk-to-pem');
 
 const config = require('../src/config');
+const awsConfig = require('./aws-config.json');
+
+aws.config.update(awsConfig);
+const dynamoDocClient = new aws.DynamoDB.DocumentClient();
 
 app.use(bodyParser.json());
 app.use(cors());
 
 app.post('/test-user-auth/', (req, res) => {
-    const authResult = validateUserAuth(req.body.token);
+    const authError = userAuthError(req);
+    if(authError) {
+        res.send({error: authError});
+        return;
+    }
+    res.send({message: 'User authentication test successful.'});
+});
 
-    if(authResult.authenticated === true) {
-        res.send({message: 'User authenticated!'});
+app.post('/save-itinerary/', (req, res) => {
+    const authError = userAuthError(req);
+    if(authError) {
+        res.send({error: authError});
+        return;
     }
-    else {
-        res.send({message: authResult.reason});
+
+    if(!req.body.itinProps) {
+        res.send({error: 'Itinerary not detected.'});
+        return;
     }
+
+    const itinProps = req.body.itinProps;
+    const username = req.body.username;
+    const itineraryName = itinProps.itineraryName;
+    console.log('got itinerary',itineraryName,'from',username);
+
+    var dynamoPutParams = {
+        TableName: config.dynamo.TABLE,
+        Item: {
+            username,
+            itineraryName,
+            itinerary: itinProps.itinerary
+        }
+    }
+
+    dynamoDocClient.put(dynamoPutParams, (err, data) => {
+        if (err) {
+            console.log("Error:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("Added:", JSON.stringify(data, null, 2));
+        }
+    });
+
+    res.send({message: 'user authenticated and itinerary detected with ' + itinProps.itinerary.length + ' items'});
 });
 
 app.listen(8080, ()=>{
     console.log('Application listening on port 8080');
 });
 
-function validateUserAuth(token) {
-    const authResult = {
-        authenticated: false,
-        reason: ''
-    }
+function userAuthError(req) {
+    const token = req.body.token;
     // receive jwt token from incoming client side request
     const tokenDecoded = jsonwebtoken.decode(token, {complete: true});
     const tokenKeyId = tokenDecoded.header.kid;
@@ -50,21 +86,15 @@ function validateUserAuth(token) {
             try {
                 verificationResult = jsonwebtoken.verify(token,pem,{algorithms:['RS256']});
             } catch (err) {
-                authResult.authenticated = false;
-                authResult.reason = err;
-                return authResult;
+                return 'Problem authenticating user: ' + err;
             }
             // if expired
             const date = Math.floor(Date.now()/1000);
             if(verificationResult.exp < date) {
-                authResult.authenticated = false;
-                authResult.reason = 'Session expired!';
-                return authResult;
+                return 'User session was expired.';
             }
-            authResult.authenticated = true;
-            return authResult;
+            return null;
         }
     }
-    authResult.authenticated = false;
-    authResult.reason = 'Authentication public key mismatch';
+    return 'Authentication public key mismatch.';
 }
