@@ -430,7 +430,7 @@ function getBodyStyle(colors) {
         // paddingTop: '0.5em',
         position: 'fixed',
         textAlign: 'center',
-        top: '15em',
+        top: CONSTANTS.headerHeight,
         width: '100%'
     }
 }

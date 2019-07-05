@@ -20,6 +20,19 @@ input {
   border-radius: .25rem;
 }
 
+.header-image {
+  height: auto;
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+@media screen and (max-width: calc(15rem * 6.8)) {
+  /* source images are width to height ratio 6.8 */
+  .header-image {
+    height: 15rem;
+  }
+}
+
 .top-gap {
   margin-top: 1rem;
 }

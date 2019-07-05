@@ -16,7 +16,7 @@ function Header({theme, setTheme, authProps}) {
         <div style={headerContainerStyle}>
             <img
                 alt='A lovely header'
-                style={headerImageStyle}
+                className='header-image'
                 src={theme === CONSTANTS.dark ?
                     CONSTANTS.images.dark.header :
                     CONSTANTS.images.light.header}
@@ -29,7 +29,7 @@ function Header({theme, setTheme, authProps}) {
 };
 
 const headerContainerStyle = {
-    height: '15em',
+    height: CONSTANTS.headerHeight,
     left: '0',
     position: 'fixed',
     top: '0',
@@ -47,12 +47,6 @@ function getThemeButtonStyle(theme) {
         right: '0',
         top: '0'
     };
-}
-const headerImageStyle = {
-    height: '100%',
-    left: '0',
-    position: 'absolute',
-    top: '0'
 }
 function getTitleStyle(theme) {
     return {

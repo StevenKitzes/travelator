@@ -5,6 +5,9 @@ const constants = {
     badFileHeader: 'Error: unrecognized file header.',
     badFileSeparator: 'Error: unrecognized file format.',
     badFileContent: 'Error: unrecognized content formatting.',
+
+    headerHeight: '15rem',
+
     colors: {
         light: {
             titleText: 'black',
@@ -37,6 +40,7 @@ const constants = {
             headerText: 'black'
         }
     },
+    
     images: {
         light: {
             header: '/img/beach.jpg'
