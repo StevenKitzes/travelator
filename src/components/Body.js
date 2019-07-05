@@ -7,6 +7,7 @@ import CONSTANTS from './../constants';
 import Factory from '../factory';
 import ItineraryHelper from '../itinerary-helper';
 import capitalize from '../capitalize';
+import fetchWithTimeout from '../fetchWithTimeout';
 
 import LoginButton from './LoginButton';
 import AddButton from './AddButton';
@@ -279,14 +280,14 @@ function Body({theme, itinProps, authProps}) {
             testErr('No user logged in, cannot authenticate');
             return;
         }
-        const request = new Request('http://localhost:8080', {
+        const options = {
             method: 'post',
             headers: {
                 "Content-Type": 'application/json;charset=UTF-8'
             },
             body: JSON.stringify({token:authProps.user.signInUserSession.accessToken.jwtToken})
-        });
-        fetch(request)
+        };
+        fetchWithTimeout('http://localhost:8080', options, 3000)
             .then((res) => {
                 return res.json();
             }).then((resJSON) => {
