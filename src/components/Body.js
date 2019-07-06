@@ -345,9 +345,6 @@ function Body({theme, itinProps, authProps}) {
                 setFeedbackType(CONSTANTS.feedback.success);
                 return;
             }).catch((err) => {
-				console.log(err);
-				console.log(err.toString());
-				console.log(JSON.stringify(err));
                 setFeedback(err);
                 setFeedbackType(CONSTANTS.feedback.failure);
             })
@@ -368,6 +365,15 @@ function Body({theme, itinProps, authProps}) {
                     <AddButton stretch theme={theme} onClick={cloudSave}>
                         <strong>Save</strong> Itinerary to Account
                     </AddButton>
+                    : null
+                }
+                {   /** cloud load button */
+                    authProps.authenticated ?
+                    <Link to='/load-itinerary/'>
+                        <AddButton stretch theme={theme}>
+                            <strong>Load</strong> Itinerary from Account
+                        </AddButton>
+                    </Link>
                     : null
                 }
                 {   /** text file download button */
@@ -473,7 +479,7 @@ function Body({theme, itinProps, authProps}) {
             <AddButton theme={theme} onClick={addFood}>
                 + Food
             </AddButton>
-            <div>
+            <div style={{display: 'none'}}>
                 <button onClick={test}>test</button>
             </div>
         </div>
@@ -490,7 +496,6 @@ function getBodyStyle(colors) {
         color: colors.text,
         height: 'calc(100% - 18em)',
         overflowY: 'auto',
-        // paddingTop: '0.5em',
         position: 'fixed',
         textAlign: 'center',
         top: CONSTANTS.headerHeight,

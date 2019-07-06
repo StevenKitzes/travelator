@@ -31,6 +31,7 @@ function Header({theme, setTheme, authProps}) {
 const headerContainerStyle = {
     height: CONSTANTS.headerHeight,
     left: '0',
+    overflow: 'hidden',
     position: 'fixed',
     top: '0',
     width: '100%'

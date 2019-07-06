@@ -8,6 +8,7 @@ import Body from './Body';
 import Login from './Login';
 import PasswordReset from './PasswordReset';
 import PasswordResetComplete from './PasswordResetComplete';
+import LoadItinerary from './LoadItinerary';
 import Footer from './Footer';
 
 function App() {
@@ -30,6 +31,14 @@ function App() {
       Auth.currentSession(),
       Auth.currentAuthenticatedUser()])
     .then(([session, user]) => {
+      if(session && session.accessToken.payload.exp) {
+        const now = Math.floor(Date.now()/1000);
+        if(now > session.accessToken.payload.exp) {
+          setUser(null);
+          setAuthenticated(false);
+          return;
+        }
+      }
       setUser(user);
       setAuthenticated(true);
     })
@@ -75,6 +84,15 @@ function App() {
             <PasswordResetComplete
               {...routeProps}
               theme={theme}
+              authProps={authProps} />
+          ); }
+        } />
+        <Route exact path='/load-itinerary/' render={
+          (routeProps) => { return (
+            <LoadItinerary
+              {...routeProps}
+              theme={theme}
+              itinProps={itinProps}
               authProps={authProps} />
           ); }
         } />
