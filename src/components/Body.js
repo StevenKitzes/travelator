@@ -345,6 +345,9 @@ function Body({theme, itinProps, authProps}) {
                 setFeedbackType(CONSTANTS.feedback.success);
                 return;
             }).catch((err) => {
+				console.log(err);
+				console.log(err.toString());
+				console.log(JSON.stringify(err));
                 setFeedback(err);
                 setFeedbackType(CONSTANTS.feedback.failure);
             })

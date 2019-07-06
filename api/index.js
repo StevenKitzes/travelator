@@ -39,26 +39,24 @@ app.post('/save-itinerary/', (req, res) => {
     const itinProps = req.body.itinProps;
     const username = req.body.username;
     const itineraryName = itinProps.itineraryName;
-    console.log('got itinerary',itineraryName,'from',username);
-
-    var dynamoPutParams = {
+	const itinerary = JSON.stringify(itinProps.itinerary);
+	
+    const dynamoPutParams = {
         TableName: config.dynamo.TABLE,
         Item: {
-            username,
-            itineraryName,
-            itinerary: itinProps.itinerary
+            username: username,
+            itineraryName: itineraryName,
+            itinerary: JSON.stringify(itinProps.itinerary)
         }
     }
 
     dynamoDocClient.put(dynamoPutParams, (err, data) => {
         if (err) {
-            console.log("Error:", JSON.stringify(err, null, 2));
+            res.send({error: "Database Error: " + JSON.stringify(err, null, 2)});
         } else {
-            console.log("Added:", JSON.stringify(data, null, 2));
+            res.send({message: "Your itinerary is safe and sound among the clouds!"});
         }
     });
-
-    res.send({message: 'user authenticated and itinerary detected with ' + itinProps.itinerary.length + ' items'});
 });
 
 app.listen(8080, ()=>{
@@ -91,7 +89,7 @@ function userAuthError(req) {
             // if expired
             const date = Math.floor(Date.now()/1000);
             if(verificationResult.exp < date) {
-                return 'User session was expired.';
+                return 'User session was expired.  You will need to sign out and back in again.';
             }
             return null;
         }
