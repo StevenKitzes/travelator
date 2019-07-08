@@ -48,7 +48,7 @@ app.post('/save-itinerary/', (req, res) => {
             itineraryName: itineraryName,
             itinerary: JSON.stringify(itinProps.itinerary)
         }
-    }
+    };
 
     dynamoDocClient.put(dynamoPutParams, (err, data) => {
         if (err) {
@@ -58,12 +58,50 @@ app.post('/save-itinerary/', (req, res) => {
         }
     });
 });
+app.post('/load-itinerary/', (req, res) => {
+    const authError = userAuthError(req);
+    if(authError) {
+        res.send({error: authError});
+        return;
+    }
+
+    if(!req.body.username) {
+        res.send({error: 'Cannot identify user.'});
+        return;
+    }
+
+    const username = req.body.username;
+	
+    const dynamoGetParams = {
+        TableName: config.dynamo.TABLE,
+        KeyConditionExpression: '#username = :username',
+        ExpressionAttributeNames: {
+            '#username': 'username'
+        },
+        ExpressionAttributeValues: {
+            ':username': username
+        }
+    };
+
+    dynamoDocClient.query(dynamoGetParams, (err, data) => {
+        if (err) {
+            console.log('Database Error:',JSON.stringify(err, null, 2));
+            res.send({error: "Database Error :("});
+        } else {
+            console.log('query succeeded with data:',data);
+            res.send(JSON.stringify(data));
+        }
+    });
+});
 
 app.listen(8080, ()=>{
     console.log('Application listening on port 8080');
 });
 
 function userAuthError(req) {
+    if(!req.body.token) {
+        return 'Problem authenticating user: no user token provided';
+    }
     const token = req.body.token;
     // receive jwt token from incoming client side request
     const tokenDecoded = jsonwebtoken.decode(token, {complete: true});

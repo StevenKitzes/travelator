@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { Redirect } from 'react-router-dom';
 
 import ActionButton from './ActionButton';
 
@@ -9,18 +10,24 @@ function LoadItinerary({theme, authProps, itinProps}) {
     
   const [feedbackType, setFeedbackType] = useState(CONSTANTS.feedback.none);
   const [feedback, setFeedback] = useState('');
+  const [itinList, setItinList] = useState(null);
 
   function handleFeedbackClick() {
     setFeedback('');
     setFeedbackType(CONSTANTS.feedback.none);
   }
-  
+
   useEffect(() => {
-    setFeedback('working');
-    setFeedbackType(CONSTANTS.feedback.success);
+    cloudLoad();
   }, []);
 
   function cloudLoad() {
+    // interrupt by returning to index if someone tried to reach itinerary loading without being logged in
+    if(!authProps.user) {
+      console.log('no user, cancelling cloud load');
+      return;
+    }
+
     const options = {
         method: 'post',
         headers: {
@@ -40,7 +47,8 @@ function LoadItinerary({theme, authProps, itinProps}) {
                 setFeedbackType(CONSTANTS.feedback.failure);
                 return;
             }
-            setFeedback(resJSON.message);
+            setItinList(resJSON.Items);
+            setFeedback(`Got DB response with ${resJSON.Items.length} itinerary items inside.`);
             setFeedbackType(CONSTANTS.feedback.success);
             return;
         }).catch((err) => {
@@ -48,14 +56,32 @@ function LoadItinerary({theme, authProps, itinProps}) {
             setFeedbackType(CONSTANTS.feedback.failure);
         })
   }
-
+  
   return (
     <div style={getLoadItineraryTheme(theme)}>
-      <p>Itineraries to load</p>
+      {
+        feedback.indexOf('Problem authenticating') > -1 || authProps.user == null ?
+        <Redirect to='/login/' /> : null
+      }
       {/** feedback */}
       <div style={getFeedbackStyle(feedbackType)} onClick={handleFeedbackClick}>
           {feedback} <ActionButton src={CONSTANTS.images.iconClose} />
       </div>
+      { /** itinList not yet populated/no server response */
+        itinList === null ? <h6>Itineraries loading...</h6> : null
+      }
+      { /** empty list returned */
+        itinList && Array.isArray(itinList) && itinList.length < 1 ? <h6>This account has no associated itineraries.</h6> : null
+      }
+      { /** itineraries received */
+        itinList && Array.isArray(itinList) && itinList.length > 0 ?
+        itinList.map((itin) => {
+          console.log(itin);
+          console.log(itin.itineraryName);
+          return <div>{itin.itineraryName}</div>;
+        })
+        : null
+      }
     </div>
   );
 }
