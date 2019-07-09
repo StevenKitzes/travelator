@@ -115,7 +115,7 @@ function ItemLodging({itemKey, theme, itinerary, setItinerary}) {
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
-                    selected={item.date}
+                    selected={Date.parse(item.date)}
                     onChange={handleArrivalChange}
                     onBlur={handleArrivalBlur}
                     popperContainer={Portal}
@@ -129,7 +129,7 @@ function ItemLodging({itemKey, theme, itinerary, setItinerary}) {
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
-                    selected={item.typeDetails.secondaryDate}
+                    selected={Date.parse(item.typeDetails.secondaryDate)}
                     onChange={handleDepartureChange}
                     onBlur={handleDepartureBlur}
                     popperContainer={Portal}

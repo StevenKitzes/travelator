@@ -119,7 +119,7 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
-                    selected={item.date}
+                    selected={Date.parse(item.date)}
                     onChange={handleDepartureChange}
                     onBlur={handleDepartureBlur}
                     popperContainer={Portal}
@@ -138,7 +138,7 @@ function ItemTravel({itemKey, theme, itinerary, setItinerary}) {
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
-                    selected={item.typeDetails.secondaryDate}
+                    selected={Date.parse(item.typeDetails.secondaryDate)}
                     onChange={handleArrivalChange}
                     onBlur={handleArrivalBlur}
                     popperContainer={Portal}

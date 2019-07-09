@@ -39,7 +39,6 @@ app.post('/save-itinerary/', (req, res) => {
     const itinProps = req.body.itinProps;
     const username = req.body.username;
     const itineraryName = itinProps.itineraryName;
-	const itinerary = JSON.stringify(itinProps.itinerary);
 	
     const dynamoPutParams = {
         TableName: config.dynamo.TABLE,
@@ -88,7 +87,42 @@ app.post('/load-itinerary/', (req, res) => {
             console.log('Database Error:',JSON.stringify(err, null, 2));
             res.send({error: "Database Error :("});
         } else {
-            console.log('query succeeded with data:',data);
+            res.send(JSON.stringify(data));
+        }
+    });
+});
+app.post('/delete-itinerary/', (req, res) => {
+    const authError = userAuthError(req);
+    if(authError) {
+        res.send({error: authError});
+        return;
+    }
+
+    if(!req.body.username) {
+        res.send({error: 'Cannot identify user.'});
+        return;
+    }
+    if(!req.body.itineraryName) {
+        res.send({error: 'Cannot identify selected itinerary.'});
+        return;
+    }
+
+    const username = req.body.username;
+    const itineraryName = req.body.itineraryName;
+	
+    const dynamoDeleteParams = {
+        TableName: config.dynamo.TABLE,
+        Key: {
+            'username': username,
+            'itineraryName': itineraryName
+        }
+    };
+
+    dynamoDocClient.delete(dynamoDeleteParams, (err, data) => {
+        if (err) {
+            console.log('Database Error:',JSON.stringify(err, null, 2));
+            res.send({error: "Database Error :("});
+        } else {
             res.send(JSON.stringify(data));
         }
     });

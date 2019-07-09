@@ -95,7 +95,7 @@ function ItemFood({itemKey, theme, itinerary, setItinerary}) {
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
-                    selected={item.date}
+                    selected={Date.parse(item.date)}
                     onChange={handleDateChange}
                     onBlur={handleDateBlur}
                     popperContainer={Portal}
