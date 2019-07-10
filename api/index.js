@@ -1,6 +1,9 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
+const helmet = require('helmet');
 
 const aws = require('aws-sdk');
 const jsonwebtoken = require('jsonwebtoken');
@@ -12,8 +15,10 @@ const awsConfig = require('./aws-config.json');
 aws.config.update(awsConfig);
 const dynamoDocClient = new aws.DynamoDB.DocumentClient();
 
+app.use(helmet());
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname,'public')));
 
 app.post('/test-user-auth/', (req, res) => {
     const authError = userAuthError(req);
