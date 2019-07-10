@@ -20,6 +20,10 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname,'public')));
 
+app.get('/ping/', (req, res) => {
+    res.send('pong!');	
+});
+
 app.post('/test-user-auth/', (req, res) => {
     const authError = userAuthError(req);
     if(authError) {
