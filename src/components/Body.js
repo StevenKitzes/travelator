@@ -297,7 +297,7 @@ function Body({theme, itinProps, authProps}) {
             },
             body: JSON.stringify({token:authProps.user.signInUserSession.accessToken.jwtToken})
         };
-        fetchWithTimeout('http://localhost:8080/test-user-auth/', options, 3000)
+        fetchWithTimeout('https://api.travelator.pro:8080/test-user-auth/', options, 3000)
             .then((res) => {
                 return res.json();
             }).then((resJSON) => {
@@ -332,7 +332,7 @@ function Body({theme, itinProps, authProps}) {
                 itinProps
             })
         };
-        fetchWithTimeout('http://localhost:8080/save-itinerary/', options, 3000)
+        fetchWithTimeout('https://api.travelator.pro:8080/save-itinerary/', options, 3000)
             .then((res) => {
                 return res.json();
             }).then((resJSON) => {

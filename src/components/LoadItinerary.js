@@ -37,7 +37,7 @@ function LoadItinerary({theme, authProps, itinProps}) {
         username: authProps.user.username
       })
     };
-    fetchWithTimeout('http://localhost:8080/load-itinerary/', options, 3000)
+    fetchWithTimeout('https://api.travelator.pro:8080/load-itinerary/', options, 3000)
     .then((res) => {
       return res.json();
     }).then((resJSON) => {
@@ -72,7 +72,7 @@ function LoadItinerary({theme, authProps, itinProps}) {
         itineraryName
       })
     };
-    fetchWithTimeout('http://localhost:8080/delete-itinerary/', options, 3000)
+    fetchWithTimeout('https://api.travelator.pro:8080/delete-itinerary/', options, 3000)
     .then((res) => {
       return res.json();
     }).then((resJSON) => {
