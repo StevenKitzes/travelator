@@ -3,5 +3,9 @@
         "REGION": /*aws region*/,
         "USER_POOL_ID": /*user pool id from AWS console/cognito*/,
         "APP_CLIENT_ID": /*app client id for specific client app from AWS console in cognito*/
+    },
+    "cognito-pub-keys": {/* from cognito link https://cognito-idp.${config.cognito.REGION}.amazonaws.com/${config.cognito.USER_POOL_ID}/.well-known/jwks.json */}
+    "dynamo": {
+        "TABLE": /*table name*/
     }
 }
