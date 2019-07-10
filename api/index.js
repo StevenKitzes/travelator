@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const helmet = require('helmet');
+const fs = require('fs');
+const https = require('https');
 
 const aws = require('aws-sdk');
 const jsonwebtoken = require('jsonwebtoken');
@@ -137,7 +139,15 @@ app.post('/delete-itinerary/', (req, res) => {
     });
 });
 
-app.listen(8080, ()=>{
+const certOpts = {
+    key: fs.readFileSync('/etc/letsencrypt/live/api.travelator.pro/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/api.travelator.pro/fullchain.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/api.travelator.pro/chain.pem')
+}
+
+const httpsServer = https.createServer(certOpts, app);
+
+httpsServer.listen(8080, ()=>{
     console.log('Application listening on port 8080');
 });
 
