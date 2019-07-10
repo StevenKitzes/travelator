@@ -49,7 +49,15 @@ function LoadItinerary({theme, authProps, itinProps}) {
       setItinList(resJSON.Items);
       return;
     }).catch((err) => {
-      setFeedback(err);
+      if(err.error) {
+        setFeedback(err.error);
+      } else if(err.message) {
+        setFeedback(err.message);
+      } else if(typeof err === 'string') {
+        setFeedback(err);
+      } else {
+        setFeedback('Unexpected error!');
+      }
       setFeedbackType(CONSTANTS.feedback.failure);
     })
   }
