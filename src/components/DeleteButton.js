@@ -1,16 +1,42 @@
-import styled from 'styled-components';
+import React, {useState} from 'react';
 
-const AddButton = styled.button`
-    background-color: lightpink;
-    border-style: solid;
-    border-color: red;
-    border-radius: .3rem;
-    color: black;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
-    margin: .5rem;
-    padding: .3rem .6rem;
-`
+function DeleteButton({stretch, handler, id, prompt, confirmPrompt, timer}) {
+    const [confirmDelete, setConfirmDelete] = useState(false);
 
-export default AddButton;
+    function handleConfirm(event) {
+        handler(event);
+    }
+    function handleFirstClick() {
+        setConfirmDelete(true);
+        setTimeout(function() { setConfirmDelete(0); }, timer || 1500);
+    }
+
+    return (
+        confirmDelete ?
+        <button id={id} style={deleteButtonStyles(stretch)} onClick={handleConfirm}>
+            {confirmPrompt}
+        </button>
+        :
+        <button id={id} style={deleteButtonStyles(stretch)} onClick={handleFirstClick}>
+            {prompt}
+        </button>
+    )
+}
+
+function deleteButtonStyles(stretch) {
+    return {
+        backgroundColor: 'lightpink',
+        borderStyle: 'solid',
+        borderColor: 'red',
+        borderRadius: '.3rem',
+        color: 'black',
+        cursor: 'pointer',
+        fontSize: '1rem',
+        fontWeight: '600',
+        margin: '.5rem',
+        padding: '.3rem .6rem',
+        width: stretch ? 'auto' : '7rem'
+    };
+}
+
+export default DeleteButton;

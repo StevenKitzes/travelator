@@ -187,7 +187,9 @@ function LoadItinerary({theme, authProps, itinProps}) {
         itinList === null ? <h6>Itineraries loading...</h6> : null
       }
       { /** empty list returned */
-        itinList && Array.isArray(itinList) && itinList.length < 1 ? <h6>This account has no associated itineraries.</h6> : null
+        itinList && Array.isArray(itinList) && itinList.length < 1 ?
+          <h6 className='top-gap-half'>This account has no saved itineraries.</h6>
+          : null
       }
       { /** itineraries received */
         itinList && Array.isArray(itinList) && itinList.length > 0 ?
@@ -205,10 +207,9 @@ function LoadItinerary({theme, authProps, itinProps}) {
                   </ItineraryListItem>
                   <DeleteButton
                     id={id}
-                    onClick={handleDeleteItineraryItem}
-                    title='Warning: this cannot be undone!'>
-                      Delete
-                  </DeleteButton>
+                    handler={handleDeleteItineraryItem}
+                    prompt='Delete'
+                    confirmPrompt='Really?' />
                 </div>
               );
             })

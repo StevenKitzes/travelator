@@ -16,6 +16,7 @@ import ItemLodging from './ItemLodging';
 import ItemActivity from './ItemActivity';
 import ItemFood from './ItemFood';
 import ActionButton from './ActionButton';
+import DeleteButton from './DeleteButton';
 
 function Body({theme, itinProps, authProps}) {
     const itinerary = itinProps.itinerary;
@@ -279,6 +280,11 @@ function Body({theme, itinProps, authProps}) {
         itinProps.setItineraryName(event.target.value);
     }
 
+    function handleClearItinerary() {
+        itinProps.setItinerary([]);
+        itinProps.setItineraryName('');
+    }
+
     function handleFeedbackClick() {
         setFeedback('');
         setFeedbackType(CONSTANTS.feedback.none);
@@ -432,10 +438,18 @@ function Body({theme, itinProps, authProps}) {
             })}
             {   /** summary line */
                 itinerary.length > 0 ?
-                <h6 className='top-gap-half'>
-                    Trip cost: ${(ItineraryHelper.getTotalCost(itinerary)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
-                </h6> :
-                null
+                <div>
+                    <h6 className='top-gap-half'>
+                        Trip cost: ${(ItineraryHelper.getTotalCost(itinerary)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}
+                    </h6>
+                    <DeleteButton
+                        stretch
+                        timer='5000'
+                        handler={handleClearItinerary}
+                        prompt='Clear itinerary'
+                        confirmPrompt='Are you sure?' />
+                </div>
+                : null
             }
             <AddButton theme={theme} onClick={addTravel}>
                 + Travel
