@@ -284,36 +284,6 @@ function Body({theme, itinProps, authProps}) {
         setFeedbackType(CONSTANTS.feedback.none);
     }
 
-    function test() {
-        if(!authProps.user) {
-            setFeedback('No one is logged in, so cannot authenticate');
-            setFeedbackType(CONSTANTS.feedback.failure);
-            return;
-        }
-        const options = {
-            method: 'post',
-            headers: {
-                "Content-Type": 'application/json;charset=UTF-8'
-            },
-            body: JSON.stringify({token:authProps.user.signInUserSession.accessToken.jwtToken})
-        };
-        fetchWithTimeout('https://api.travelator.pro:8080/test-user-auth/', options, 3000)
-            .then((res) => {
-                return res.json();
-            }).then((resJSON) => {
-                if(resJSON.error) {
-                    setFeedback(resJSON.error);
-                    setFeedbackType(CONSTANTS.feedback.failure);
-                    return;
-                }
-                setFeedback(resJSON.message);
-                setFeedbackType(CONSTANTS.feedback.success);
-            }).catch((err) => {
-                setFeedback(err);
-                setFeedbackType(CONSTANTS.feedback.failure);
-            })
-    }
-
     function cloudSave() {
         if(!itinProps.itineraryName) {
             setFeedback('Itinerary name needed for Cloud storage!');
@@ -479,9 +449,6 @@ function Body({theme, itinProps, authProps}) {
             <AddButton theme={theme} onClick={addFood}>
                 + Food
             </AddButton>
-            <div style={{display: 'none'}}>
-                <button onClick={test}>test</button>
-            </div>
         </div>
     );
 }

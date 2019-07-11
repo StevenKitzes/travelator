@@ -21,7 +21,7 @@ function PasswordReset({theme, authProps, history}) {
     const [code, setCode] = useState('');
     const [error, setError] = useState('');
     function handleEmailChange(newEmail) {
-        setEmail(newEmail);
+        setEmail(newEmail.toLowerCase());
     }
     function handlePassChange(newPass) {
         setPass(newPass);

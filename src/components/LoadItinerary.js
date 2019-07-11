@@ -1,9 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+
+import { Auth } from 'aws-amplify';
 
 import ItineraryListItem from './ItineraryListItem';
 import ActionButton from './ActionButton';
 import DeleteButton from './DeleteButton';
+import LoginButton from './LoginButton';
+import AddButton from './AddButton';
 
 import CONSTANTS from '../constants';
 import fetchWithTimeout from '../fetchWithTimeout';
@@ -98,6 +102,15 @@ function LoadItinerary({theme, authProps, itinProps}) {
       setFeedbackType(CONSTANTS.feedback.failure);
     })
   }
+
+  function handleLogOut() {
+      Auth.signOut()
+      .then(() => {
+          authProps.setAuthenticated(false);
+          authProps.setUser(null);
+      })
+      .catch(caught => console.log(caught));
+  }
   
   function handleFeedbackClick() {
     setFeedback('');
@@ -135,6 +148,10 @@ function LoadItinerary({theme, authProps, itinProps}) {
       }
     }
   }
+
+  function handleNevermind() {
+    setSendHome(true);
+  }
   
   return (
     <div style={getLoadItineraryTheme(colors)}>
@@ -145,6 +162,17 @@ function LoadItinerary({theme, authProps, itinProps}) {
       {
         sendHome ?
         <Redirect to='/' /> : null
+      }
+      {   /** login/logout button */
+          authProps.authenticated ?
+          <LoginButton theme={theme} onClick={handleLogOut}>
+              Logout
+          </LoginButton> :
+          <Link to='/login/'>
+              <LoginButton theme={theme}>
+                  Login / Register
+              </LoginButton>
+          </Link>
       }
       { /** itineraries received */
         itinList && Array.isArray(itinList) && itinList.length > 0 ?
@@ -188,6 +216,10 @@ function LoadItinerary({theme, authProps, itinProps}) {
         </div>
         : null
       }
+      <hr style={{width: '30rem', borderColor: 'darkgray'}} />
+      <AddButton theme={theme} onClick={handleNevermind}>
+          Nevermind
+      </AddButton>
     </div>
   );
 }

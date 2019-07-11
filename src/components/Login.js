@@ -28,7 +28,7 @@ function Login({theme, authProps, history}) {
         setFormType('register');
     }
     function handleEmailChange(newEmail) {
-        setEmail(newEmail);
+        setEmail(newEmail.toLowerCase());
     }
     function handlePassChange(newPass) {
         setPass(newPass);

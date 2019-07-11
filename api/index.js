@@ -26,15 +26,6 @@ app.get('/ping/', (req, res) => {
     res.send('pong!');	
 });
 
-app.post('/test-user-auth/', (req, res) => {
-    const authError = userAuthError(req);
-    if(authError) {
-        res.send({error: authError});
-        return;
-    }
-    res.send({message: 'User authentication test successful.'});
-});
-
 app.post('/save-itinerary/', (req, res) => {
     const authError = userAuthError(req);
     if(authError) {
