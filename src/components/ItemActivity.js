@@ -65,7 +65,7 @@ function ItemActivity({itemKey, theme, itinerary, setItinerary}) {
 
     return (
         <div>
-        <ItineraryItemHeader theme={theme}>
+        <ItineraryItemHeader theme={theme} day={item.date.getDay()}>
             Activity
         </ItineraryItemHeader>
             <ItineraryItem theme={theme}>

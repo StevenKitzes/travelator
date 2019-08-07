@@ -85,7 +85,7 @@ function ItemLodging({itemKey, theme, itinerary, setItinerary}) {
 
     return (
         <div>
-        <ItineraryItemHeader theme={theme}>
+        <ItineraryItemHeader theme={theme} day={item.date.getDay()}>
             Lodging
         </ItineraryItemHeader>
             <ItineraryItem theme={theme}>
