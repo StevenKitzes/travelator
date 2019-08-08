@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import CONSTANTS from '../constants';
-
 const ItineraryItemHeader = styled.div`
     background-color: ${props =>
 		props.day === 0 ? '#900' :
