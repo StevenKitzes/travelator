@@ -3,5 +3,22 @@
         "REGION": "AWS_REGION_e.g._us-east-1",
         "USER_POOL_ID": "COGNITO_USER_POOL_ID",
         "APP_CLIENT_ID": "COGNITO_APP_CLIENT_ID"
+    },
+    "server": {
+        "_comment": "domain + port for the frontend Vite server. Consumed by vite.config.mjs. `domain` is the subdomain whose Let's Encrypt cert (/etc/letsencrypt/live/<domain>/) the server serves HTTPS with.",
+        "domain": "YOUR_FRONTEND_DOMAIN",
+        "port": 3000,
+        "_comment_cert": "When useCert is true, vite.config.mjs serves HTTPS using the cert files below (key + cert are required; ca is optional since fullchain.pem already bundles the chain — leave it empty if unused). When false, Vite serves plain HTTP (TLS terminated upstream, e.g. by nginx) and certPaths may be left empty. Paths map to Let's Encrypt files: key -> privkey.pem, cert -> fullchain.pem, ca -> chain.pem (typically unused here).",
+        "useCert": true,
+        "certPaths": {
+            "key": "/etc/letsencrypt/live/YOUR_FRONTEND_DOMAIN/privkey.pem",
+            "cert": "/etc/letsencrypt/live/YOUR_FRONTEND_DOMAIN/fullchain.pem",
+            "ca": ""
+        }
+    },
+    "api": {
+        "_comment": "host + port the frontend uses to build backend API request URLs. NOTE: api.port is intentionally duplicated from api/aws-config.json's `port`. The backend OWNS the port (it binds it); the frontend only needs the value to target the endpoint and cannot import the backend's separate config. If the API port changes, update BOTH files.",
+        "host": "https://YOUR_API_DOMAIN",
+        "port": 8080
     }
 }
