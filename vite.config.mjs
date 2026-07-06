@@ -3,15 +3,20 @@ import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import config from './src/config.json';
 
-// The frontend serves HTTPS directly using the Let's Encrypt cert generated for
-// its own subdomain (mirrors how api/index.js loads the API subdomain's cert).
-// fullchain.pem already includes the intermediate chain, so no separate
-// `ca`/chain.pem entry is needed.
+// When server.useCert is true, the frontend serves HTTPS directly using the
+// cert files configured in src/config.json (mirrors how api/index.js loads its
+// certs). fullchain.pem already bundles the intermediate chain, so `ca` is
+// optional. When useCert is false, `https` is false and Vite serves plain HTTP
+// (TLS terminated upstream, e.g. by nginx).
 const frontendDomain = config.server.domain;
-const httpsOptions = {
-  key: fs.readFileSync(`/etc/letsencrypt/live/${frontendDomain}/privkey.pem`),
-  cert: fs.readFileSync(`/etc/letsencrypt/live/${frontendDomain}/fullchain.pem`)
-};
+const certPaths = config.server.certPaths || {};
+const httpsOptions = config.server.useCert
+  ? {
+      key: fs.readFileSync(certPaths.key),
+      cert: fs.readFileSync(certPaths.cert),
+      ...(certPaths.ca ? { ca: fs.readFileSync(certPaths.ca) } : {})
+    }
+  : false;
 
 // Migrated from Create React App. The source tree uses .js files that contain
 // JSX (CRA convention), so esbuild is told to treat .js as JSX everywhere.

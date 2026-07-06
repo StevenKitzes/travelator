@@ -4,6 +4,13 @@
     "table": "DYNAMODB_TABLE_NAME",
     "_comment_port": "Port the Express server binds (see index.js). Mirrored in src/config.json (api.port) so the frontend can target this endpoint — keep both in sync.",
     "port": 8080,
+    "_comment_cert": "When useCert is true, index.js serves HTTPS using the three cert files below. When false, it serves plain HTTP (TLS terminated upstream, e.g. by nginx) and certPaths may be left empty. Paths map to Let's Encrypt files: key -> privkey.pem, cert -> fullchain.pem, ca -> chain.pem.",
+    "useCert": true,
+    "certPaths": {
+        "key": "/etc/letsencrypt/live/YOUR_API_DOMAIN/privkey.pem",
+        "cert": "/etc/letsencrypt/live/YOUR_API_DOMAIN/fullchain.pem",
+        "ca": "/etc/letsencrypt/live/YOUR_API_DOMAIN/chain.pem"
+    },
     "accessKeyId": "AWS_ACCESS_KEY_ID_or_omit_to_use_IAM_role",
     "secretAccessKey": "AWS_SECRET_ACCESS_KEY_or_omit_to_use_IAM_role",
     "cognito-pub-keys": {

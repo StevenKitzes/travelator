@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const helmet = require('helmet');
 const fs = require('fs');
+const http = require('http');
 const https = require('https');
 const crypto = require('crypto');
 
@@ -142,16 +143,22 @@ app.post('/delete-itinerary/', async (req, res) => {
     }
 });
 
-const certOpts = {
-    key: fs.readFileSync('/etc/letsencrypt/live/api.travelator.stevenkitz.es/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/api.travelator.stevenkitz.es/fullchain.pem'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/api.travelator.stevenkitz.es/chain.pem')
+// Serve HTTPS with the configured certs, or plain HTTP when useCert is false
+// (TLS terminated upstream, e.g. by nginx). Cert paths come from aws-config.json.
+let server;
+if (awsConfig.useCert) {
+    const certOpts = {
+        key: fs.readFileSync(awsConfig.certPaths.key),
+        cert: fs.readFileSync(awsConfig.certPaths.cert),
+        ca: fs.readFileSync(awsConfig.certPaths.ca)
+    };
+    server = https.createServer(certOpts, app);
+} else {
+    server = http.createServer(app);
 }
 
-const httpsServer = https.createServer(certOpts, app);
-
-httpsServer.listen(awsConfig.port, ()=>{
-    console.log('Application listening on port ' + awsConfig.port);
+server.listen(awsConfig.port, ()=>{
+    console.log('Application listening on port ' + awsConfig.port + (awsConfig.useCert ? ' (https)' : ' (http)'));
 });
 
 function userAuthError(req) {
