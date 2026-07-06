@@ -10,6 +10,7 @@ import LoginButton from './LoginButton';
 import AddButton from './AddButton';
 
 import CONSTANTS from '../constants';
+import config from '../config';
 import fetchWithTimeout from '../fetchWithTimeout';
 
 function LoadItinerary({theme, authProps, itinProps}) {
@@ -41,7 +42,7 @@ function LoadItinerary({theme, authProps, itinProps}) {
         username: authProps.user.username
       })
     };
-    fetchWithTimeout('https://api.travelator.pro:8080/load-itinerary/', options, 3000)
+    fetchWithTimeout(`${config.api.host}:${config.api.port}/load-itinerary/`, options, 3000)
     .then((res) => {
       return res.json();
     }).then((resJSON) => {
@@ -84,7 +85,7 @@ function LoadItinerary({theme, authProps, itinProps}) {
         itineraryName
       })
     };
-    fetchWithTimeout('https://api.travelator.pro:8080/delete-itinerary/', options, 3000)
+    fetchWithTimeout(`${config.api.host}:${config.api.port}/delete-itinerary/`, options, 3000)
     .then((res) => {
       return res.json();
     }).then((resJSON) => {

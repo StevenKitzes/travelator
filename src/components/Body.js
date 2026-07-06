@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { signOut } from 'aws-amplify/auth';
 
 import CONSTANTS from './../constants';
+import config from '../config';
 import Factory from '../factory';
 import ItineraryHelper from '../itinerary-helper';
 import capitalize from '../capitalize';
@@ -308,7 +309,7 @@ function Body({theme, itinProps, authProps}) {
                 itinProps
             })
         };
-        fetchWithTimeout('https://api.travelator.pro:8080/save-itinerary/', options, 3000)
+        fetchWithTimeout(`${config.api.host}:${config.api.port}/save-itinerary/`, options, 3000)
             .then((res) => {
                 return res.json();
             }).then((resJSON) => {

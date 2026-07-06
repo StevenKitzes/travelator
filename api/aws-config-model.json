@@ -2,6 +2,8 @@
     "region": "AWS_REGION_e.g._us-east-1",
     "endpoint": "https://dynamodb.AWS_REGION.amazonaws.com",
     "table": "DYNAMODB_TABLE_NAME",
+    "_comment_port": "Port the Express server binds (see index.js). Mirrored in src/config.json (api.port) so the frontend can target this endpoint — keep both in sync.",
+    "port": 8080,
     "accessKeyId": "AWS_ACCESS_KEY_ID_or_omit_to_use_IAM_role",
     "secretAccessKey": "AWS_SECRET_ACCESS_KEY_or_omit_to_use_IAM_role",
     "cognito-pub-keys": {

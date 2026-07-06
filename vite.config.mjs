@@ -1,12 +1,13 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import config from './src/config.json';
 
 // Migrated from Create React App. The source tree uses .js files that contain
 // JSX (CRA convention), so esbuild is told to treat .js as JSX everywhere.
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 3000,
+    port: config.server.port,
     open: true
   },
   build: {

@@ -150,8 +150,8 @@ const certOpts = {
 
 const httpsServer = https.createServer(certOpts, app);
 
-httpsServer.listen(8080, ()=>{
-    console.log('Application listening on port 8080');
+httpsServer.listen(awsConfig.port, ()=>{
+    console.log('Application listening on port ' + awsConfig.port);
 });
 
 function userAuthError(req) {
