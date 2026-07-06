@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 
-import { Auth } from 'aws-amplify';
+import { signOut } from 'aws-amplify/auth';
 
 import CONSTANTS from './../constants';
 import Factory from '../factory';
@@ -268,7 +268,7 @@ function Body({theme, itinProps, authProps}) {
     }
 
     function handleLogOut() {
-        Auth.signOut()
+        signOut()
         .then(() => {
             authProps.setAuthenticated(false);
             authProps.setUser(null);

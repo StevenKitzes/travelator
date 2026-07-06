@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { Auth } from 'aws-amplify';
+import { confirmResetPassword } from 'aws-amplify/auth';
 
 import CONSTANTS from '../constants';
 
@@ -10,7 +10,9 @@ import InputHeader from './InputHeader';
 import InputLogin from './InputLogin';
 import AddButton from './AddButton';
 
-function PasswordReset({theme, authProps, history}) {
+function PasswordReset({theme, authProps}) {
+    const navigate = useNavigate();
+
     const themeColors = theme === CONSTANTS.dark ?
         CONSTANTS.colors.dark :
         CONSTANTS.colors.light;
@@ -68,9 +70,9 @@ function PasswordReset({theme, authProps, history}) {
         setError('');
         
         // Auth stuff uses Promise architecture
-        Auth.forgotPasswordSubmit(email, code, pass)
+        confirmResetPassword({ username: email, confirmationCode: code, newPassword: pass })
         .then(() => {
-            history.push('/password-reset-complete/');
+            navigate('/password-reset-complete/');
         })
         .catch(caught => {
             setError(caught);

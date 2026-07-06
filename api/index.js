@@ -1,32 +1,47 @@
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const helmet = require('helmet');
 const fs = require('fs');
 const https = require('https');
+const crypto = require('crypto');
 
-const aws = require('aws-sdk');
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const {
+    DynamoDBDocumentClient,
+    PutCommand,
+    QueryCommand,
+    DeleteCommand
+} = require('@aws-sdk/lib-dynamodb');
 const jsonwebtoken = require('jsonwebtoken');
-const jtp = require('jwk-to-pem');
 
-const config = require('../src/config');
 const awsConfig = require('./aws-config.json');
 
-aws.config.update(awsConfig);
-const dynamoDocClient = new aws.DynamoDB.DocumentClient();
+// Prefer an IAM role / instance profile in deployed environments. Static
+// credentials are only used when present in aws-config.json.
+const dynamoClientConfig = { region: awsConfig.region };
+if (awsConfig.endpoint) {
+    dynamoClientConfig.endpoint = awsConfig.endpoint;
+}
+if (awsConfig.accessKeyId && awsConfig.secretAccessKey) {
+    dynamoClientConfig.credentials = {
+        accessKeyId: awsConfig.accessKeyId,
+        secretAccessKey: awsConfig.secretAccessKey
+    };
+}
+const dynamoDocClient = DynamoDBDocumentClient.from(new DynamoDBClient(dynamoClientConfig));
 
 app.use(helmet());
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname,'public')));
 
 app.get('/ping/', (req, res) => {
-    res.send('pong!');	
+    res.send('pong!');
 });
 
-app.post('/save-itinerary/', (req, res) => {
+app.post('/save-itinerary/', async (req, res) => {
     const authError = userAuthError(req);
     if(authError) {
         res.send({error: authError});
@@ -41,9 +56,9 @@ app.post('/save-itinerary/', (req, res) => {
     const itinProps = req.body.itinProps;
     const username = req.body.username;
     const itineraryName = itinProps.itineraryName;
-	
+
     const dynamoPutParams = {
-        TableName: config.dynamo.TABLE,
+        TableName: awsConfig.table,
         Item: {
             username: username,
             itineraryName: itineraryName,
@@ -51,15 +66,14 @@ app.post('/save-itinerary/', (req, res) => {
         }
     };
 
-    dynamoDocClient.put(dynamoPutParams, (err, data) => {
-        if (err) {
-            res.send({error: "Database Error: " + JSON.stringify(err, null, 2)});
-        } else {
-            res.send({message: "Your itinerary is safe and sound among the clouds!"});
-        }
-    });
+    try {
+        await dynamoDocClient.send(new PutCommand(dynamoPutParams));
+        res.send({message: "Your itinerary is safe and sound among the clouds!"});
+    } catch (err) {
+        res.send({error: "Database Error: " + JSON.stringify(err, null, 2)});
+    }
 });
-app.post('/load-itinerary/', (req, res) => {
+app.post('/load-itinerary/', async (req, res) => {
     const authError = userAuthError(req);
     if(authError) {
         res.send({error: authError});
@@ -72,9 +86,9 @@ app.post('/load-itinerary/', (req, res) => {
     }
 
     const username = req.body.username;
-	
+
     const dynamoGetParams = {
-        TableName: config.dynamo.TABLE,
+        TableName: awsConfig.table,
         KeyConditionExpression: '#username = :username',
         ExpressionAttributeNames: {
             '#username': 'username'
@@ -84,16 +98,15 @@ app.post('/load-itinerary/', (req, res) => {
         }
     };
 
-    dynamoDocClient.query(dynamoGetParams, (err, data) => {
-        if (err) {
-            console.log('Database Error:',JSON.stringify(err, null, 2));
-            res.send({error: "Database Error :("});
-        } else {
-            res.send(JSON.stringify(data));
-        }
-    });
+    try {
+        const data = await dynamoDocClient.send(new QueryCommand(dynamoGetParams));
+        res.send(JSON.stringify(data));
+    } catch (err) {
+        console.log('Database Error:',JSON.stringify(err, null, 2));
+        res.send({error: "Database Error :("});
+    }
 });
-app.post('/delete-itinerary/', (req, res) => {
+app.post('/delete-itinerary/', async (req, res) => {
     const authError = userAuthError(req);
     if(authError) {
         res.send({error: authError});
@@ -111,23 +124,22 @@ app.post('/delete-itinerary/', (req, res) => {
 
     const username = req.body.username;
     const itineraryName = req.body.itineraryName;
-	
+
     const dynamoDeleteParams = {
-        TableName: config.dynamo.TABLE,
+        TableName: awsConfig.table,
         Key: {
             'username': username,
             'itineraryName': itineraryName
         }
     };
 
-    dynamoDocClient.delete(dynamoDeleteParams, (err, data) => {
-        if (err) {
-            console.log('Database Error:',JSON.stringify(err, null, 2));
-            res.send({error: "Database Error :("});
-        } else {
-            res.send(JSON.stringify(data));
-        }
-    });
+    try {
+        const data = await dynamoDocClient.send(new DeleteCommand(dynamoDeleteParams));
+        res.send(JSON.stringify(data));
+    } catch (err) {
+        console.log('Database Error:',JSON.stringify(err, null, 2));
+        res.send({error: "Database Error :("});
+    }
 });
 
 const certOpts = {
@@ -152,19 +164,19 @@ function userAuthError(req) {
     const tokenKeyId = tokenDecoded.header.kid;
 
     // link to retrieve public key info from cognito
-    // `https://cognito-idp.${config.cognito.REGION}.amazonaws.com/${config.cognito.USER_POOL_ID}/.well-known/jwks.json`;
-    keys = config["cognito-pub-keys"].keys;
+    // `https://cognito-idp.${awsConfig.region}.amazonaws.com/${awsConfig['user-pool-id']}/.well-known/jwks.json`;
+    const keys = awsConfig["cognito-pub-keys"].keys;
 
     // select key with matching keyid
     for(let i = 0; i < keys.length; i++) {
         if(keys[i].kid === tokenKeyId) {
-            // found matching keyid; convert jwk to pem
-            const pem = jtp(keys[i]);
-            
-            // verify token against pem
+            // found matching keyid; convert jwk to a public key object
+            const publicKey = crypto.createPublicKey({ key: keys[i], format: 'jwk' });
+
+            // verify token against public key
             let verificationResult;
             try {
-                verificationResult = jsonwebtoken.verify(token,pem,{algorithms:['RS256']});
+                verificationResult = jsonwebtoken.verify(token,publicKey,{algorithms:['RS256']});
             } catch (err) {
                 return 'Problem authenticating user: ' + err;
             }

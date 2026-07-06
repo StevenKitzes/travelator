@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
-import { Auth } from 'aws-amplify';
+import { signOut } from 'aws-amplify/auth';
 
 import ItineraryListItem from './ItineraryListItem';
 import ActionButton from './ActionButton';
@@ -104,7 +104,7 @@ function LoadItinerary({theme, authProps, itinProps}) {
   }
 
   function handleLogOut() {
-      Auth.signOut()
+      signOut()
       .then(() => {
           authProps.setAuthenticated(false);
           authProps.setUser(null);
@@ -157,11 +157,11 @@ function LoadItinerary({theme, authProps, itinProps}) {
     <div style={getLoadItineraryTheme(colors)}>
       {
         authProps.user == null ?
-        <Redirect to='/login/' /> : null
+        <Navigate to='/login/' /> : null
       }
       {
         sendHome ?
-        <Redirect to='/' /> : null
+        <Navigate to='/' /> : null
       }
       {   /** login/logout button */
           authProps.authenticated ?

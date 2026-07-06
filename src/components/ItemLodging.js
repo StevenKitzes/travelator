@@ -3,7 +3,6 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';    // required by DatePicker
 import '../react-datepicker-override.css';
-import { Portal } from 'react-overlays';                // required by DatePicker
 
 import CONSTANTS from '../constants';
 import ItineraryHelper from '../itinerary-helper';
@@ -115,11 +114,11 @@ function ItemLodging({itemKey, theme, itinerary, setItinerary}) {
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
-                    selected={Date.parse(item.date)}
+                    selected={item.date}
                     onChange={handleArrivalChange}
                     onBlur={handleArrivalBlur}
-                    popperContainer={Portal}
-                    popperPlacement='auto-right'
+                    portalId='datepicker-portal'
+                    popperPlacement='right'
                     />{' '}
                 Departing:{' '}
                 <DatePicker
@@ -129,11 +128,11 @@ function ItemLodging({itemKey, theme, itinerary, setItinerary}) {
                     showTimeSelect
                     timeFormat='HH:mm'
                     dateFormat="MMM d, HH:mm"
-                    selected={Date.parse(item.typeDetails.secondaryDate)}
+                    selected={item.typeDetails.secondaryDate}
                     onChange={handleDepartureChange}
                     onBlur={handleDepartureBlur}
-                    popperContainer={Portal}
-                    popperPlacement='auto-right'
+                    portalId='datepicker-portal'
+                    popperPlacement='right'
                     />{' '}
                 <ActionButton
                     src={CONSTANTS.images.iconClose}

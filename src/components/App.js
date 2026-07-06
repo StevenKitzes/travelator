@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import { Auth } from 'aws-amplify';
+import { buildCurrentUser } from '../auth-helper';
 
 import Header from './Header';
 import Body from './Body';
@@ -27,13 +27,12 @@ function App() {
 
   // auth session management
   useEffect(() => {
-    Promise.all([
-      Auth.currentSession(),
-      Auth.currentAuthenticatedUser()])
-    .then(([session, user]) => {
-      if(session && session.accessToken.payload.exp) {
+    buildCurrentUser()
+    .then((user) => {
+      const exp = user.signInUserSession.accessToken.payload.exp;
+      if(exp) {
         const now = Math.floor(Date.now()/1000);
-        if(now > session.accessToken.payload.exp) {
+        if(now > exp) {
           setUser(null);
           setAuthenticated(false);
           return;
@@ -54,48 +53,35 @@ function App() {
         setTheme={setTheme}
         authProps={authProps} />
       <Router>
-        <Route exact path='/' render={
-          (routeProps) => { return (
+        <Routes>
+          <Route path='/' element={
             <Body
-              {...routeProps}
               theme={theme}
               itinProps={itinProps}
               authProps={authProps} />
-          ); }
-        } />
-        <Route exact path='/login/' render={
-          (routeProps) => { return (
+          } />
+          <Route path='/login/' element={
             <Login
-              {...routeProps}
               theme={theme}
               authProps={authProps} />
-          ); }
-        } />
-        <Route exact path='/password-reset/' render={
-          (routeProps) => { return (
+          } />
+          <Route path='/password-reset/' element={
             <PasswordReset
-              {...routeProps}
               theme={theme}
               authProps={authProps} />
-          ); }
-        } />
-        <Route exact path='/password-reset-complete/' render={
-          (routeProps) => { return (
+          } />
+          <Route path='/password-reset-complete/' element={
             <PasswordResetComplete
-              {...routeProps}
               theme={theme}
               authProps={authProps} />
-          ); }
-        } />
-        <Route exact path='/load-itinerary/' render={
-          (routeProps) => { return (
+          } />
+          <Route path='/load-itinerary/' element={
             <LoadItinerary
-              {...routeProps}
               theme={theme}
               itinProps={itinProps}
               authProps={authProps} />
-          ); }
-        } />
+          } />
+        </Routes>
       </Router>
       <Footer theme={theme} />
     </div>

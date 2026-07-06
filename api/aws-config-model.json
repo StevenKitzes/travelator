@@ -1,7 +1,10 @@
 {
-    "region": "${region}",
-    "endpoint": "https://dynamodb.${region}.amazonaws.com",
-    "table": "${table-name}",
-    "accessKeyId": "???",
-    "secretAccessKey": "?????"
+    "region": "AWS_REGION_e.g._us-east-1",
+    "endpoint": "https://dynamodb.AWS_REGION.amazonaws.com",
+    "table": "DYNAMODB_TABLE_NAME",
+    "accessKeyId": "AWS_ACCESS_KEY_ID_or_omit_to_use_IAM_role",
+    "secretAccessKey": "AWS_SECRET_ACCESS_KEY_or_omit_to_use_IAM_role",
+    "cognito-pub-keys": {
+        "keys": []
+    }
 }

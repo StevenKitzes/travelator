@@ -1,18 +1,20 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import App from './components/App';
 
-import Amplify from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
 import config from './config';
 
 Amplify.configure({
     Auth: {
-        mandatorySignId: true,
-        region: config.cognito.REGION,
-        userPoolId: config.cognito.USER_POOL_ID,
-        userPoolWebClientId: config.cognito.APP_CLIENT_ID
+        Cognito: {
+            userPoolId: config.cognito.USER_POOL_ID,
+            userPoolClientId: config.cognito.APP_CLIENT_ID
+        }
     }
 });
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const root = createRoot(document.getElementById('root'));
+root.render(<App />);

@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { Auth } from 'aws-amplify';
+import { signIn, signUp, resetPassword } from 'aws-amplify/auth';
 
+import { buildCurrentUser } from '../auth-helper';
 import CONSTANTS from '../constants';
 
 import LoginButton from './LoginButton';
@@ -11,7 +12,9 @@ import InputLogin from './InputLogin';
 import LoginSwitcher from './LoginSwitcher';
 import AddButton from './AddButton';
 
-function Login({theme, authProps, history}) {
+function Login({theme, authProps}) {
+    const navigate = useNavigate();
+
     const themeColors = theme === CONSTANTS.dark ?
         CONSTANTS.colors.dark :
         CONSTANTS.colors.light;
@@ -72,24 +75,24 @@ function Login({theme, authProps, history}) {
         
         // Auth stuff uses Promise architecture
         if(formType === 'register') {
-            Auth.signUp({
+            signUp({
                 username: email,
                 password: pass
             })
             .then(() => {
-                history.push('/');
+                navigate('/');
             })
             .catch(caught => {
                 setError(caught);
             });
         }
         if(formType === 'login') {
-            Auth.signIn(email, pass)
+            signIn({ username: email, password: pass })
+            .then(() => buildCurrentUser())
             .then(user => {
-                console.log(user);
                 authProps.setUser(user);
                 authProps.setAuthenticated(true);
-                history.push('/');
+                navigate('/');
             })
             .catch(caught => {
                 setError(caught);
@@ -102,9 +105,9 @@ function Login({theme, authProps, history}) {
             return;
         }
         setError('');
-        Auth.forgotPassword(email)
+        resetPassword({ username: email })
             .then(() => {
-                history.push('/password-reset/');
+                navigate('/password-reset/');
             })
             .catch(caught => {
                 setError(caught);
