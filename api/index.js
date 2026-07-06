@@ -143,9 +143,9 @@ app.post('/delete-itinerary/', async (req, res) => {
 });
 
 const certOpts = {
-    key: fs.readFileSync('/etc/letsencrypt/live/api.travelator.pro/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/api.travelator.pro/fullchain.pem'),
-    ca: fs.readFileSync('/etc/letsencrypt/live/api.travelator.pro/chain.pem')
+    key: fs.readFileSync('/etc/letsencrypt/live/api.travelator.stevenkitz.es/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/api.travelator.stevenkitz.es/fullchain.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/api.travelator.stevenkitz.es/chain.pem')
 }
 
 const httpsServer = https.createServer(certOpts, app);
